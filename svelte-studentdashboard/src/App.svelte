@@ -1,5 +1,16 @@
 <script>
+	import { onMount } from 'svelte';
+	import studentdata from '../data/studentdata';
 	export let name;
+
+
+// 	const csv = `hallo,1,2,3
+// doei,4,5,6`;
+//
+const parse = str => str.split('\n').map(row => row.split(','));
+
+console.log(parse(studentdata));
+
 </script>
 
 <main>
