@@ -1,7 +1,7 @@
 <script>
   import StudentData from './data/StudentData.svelte';
 
-  let show = true;
+  let show = false;
 
 // 	const csv = `hallo,1,2,3
 // doei,4,5,6`;
