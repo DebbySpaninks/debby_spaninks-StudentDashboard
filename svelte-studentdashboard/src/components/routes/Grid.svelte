@@ -1,3 +1,5 @@
+<!-- Component to display Grid -->
+
 <script>
 
 import { tick } from 'svelte';
@@ -290,6 +292,8 @@ $: options = MergeRecursive(defaults, options);
 $: console.log(options);
 
 </script>
+
+<h1>Dit is het display component van Grid</h1>
 
 <svelte:window on:pointermove={pMove} on:pointerup={pUp} />
 

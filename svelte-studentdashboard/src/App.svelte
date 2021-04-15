@@ -2,8 +2,8 @@
 import { Router, Link, Route } from 'svelte-navigator';
 import BarChart from './components/routes/BarChart.svelte';
 import Grid from './components/routes/Grid.svelte';
+import StudentList from './components/StudentList.svelte';
 import { onMount } from 'svelte';
-
 
 // \n = new line character                 // nog voor.map invoegen .filter(arr => !Array.isArray(arr) || arr.length === 0 : )
 const parseCSV = text => text.split('\n').map(row => row.split(','));
@@ -46,37 +46,44 @@ onMount(async() => {
 
 </script>
 
-
-
-
 <Router>
+ <div class="container">
 	<nav>
-		<Link to="/">Home</Link>
-		<Link to="grid">Tabel overzicht</Link>
+    <Link to="/"><button class="btn-home">Home</button></Link>
+    <Link to="/"><button class="btn-barchart">Staafdiagram</button></Link>
+    <Link to="grid"><button class="btn-table">Tabel overzicht</button></Link>
 	</nav>
 	<div>
+    <sidebar>
+      <StudentList listItems={studentdata[0]}/>
+    </sidebar>
 		<Route exact path="/">
-			<BarChart />
+			<BarChart class="bartchart" data={studentdata}/>
 		</Route>
-    <Route path="grid" >
+      <Route path="grid" >
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
         <Grid class="grid" bind:data={studentdata} bind:sizes />
       {/if}
-    </Route>
-	</div>
+      </Route>
+	  </div>
+  </div>
 </Router>
 
 <style>
-/*
-main {
+
+.container {
+  margin: 2.5em;
+  padding: 1em;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
-} */
-	/* h1 {
-		font-size: 72px;
-		text-align: center;
-	} */
+  background-color: lightgreen;
+}
+
+.container button {
+
+}
+
+
 </style>
