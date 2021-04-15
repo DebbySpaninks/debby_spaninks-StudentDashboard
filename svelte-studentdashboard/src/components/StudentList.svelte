@@ -3,7 +3,7 @@
 <script>
   export let listItems = [];
 
-// How to add keys to csv text???????         see svelte tutorial!
+// How to add keys to csv text? In this component only keys without value!       see svelte tutorial!
   // {
   //   "student": "Evelyn",
   //   "assignment": "SCRUM",
