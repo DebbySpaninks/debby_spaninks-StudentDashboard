@@ -6,11 +6,11 @@ import Grid from './components/routes/Grid2.svelte';
 import List from './components/List.svelte';
 import { onMount } from 'svelte';
 
-// \n = new line character
+// \n = new line character, trim is used for space
 const parseCSV = text => text.split('\n').filter(line => line.trim() !== '').map(row => row.split(','));
 
 let studentdata = false;
-// array van alle studentnamen (studentdata.map(row => row[0])
+// array of all studentnames (studentdata.map(row => row[0])
 $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].sort() : [];
 
 
@@ -58,10 +58,8 @@ onMount(async() => {
     <Link to="barchart"><button class="btn-barchart">Staafdiagram</button></Link>
     <Link to="grid"><button class="btn-table">Tabel overzicht</button></Link>
 	</nav>
-	<div>
-    <sidebar>
-      <List listItems={studentnames}/>
-    </sidebar>
+
+  <div>
     <Route exact path="/">
       <Home />
     </Route>
@@ -69,18 +67,27 @@ onMount(async() => {
       <BarChart />
       <!-- <BarChart class="bartchart" data={studentdata}/> -->
     </Route>
-      <Route path="grid" >
+
+    <Route path="grid" >
+      <div class="canvas">
+        <List items={studentnames}/>
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
         <Grid class="grid" bind:data={studentdata} bind:sizes />
       {/if}
-      </Route>
-	  </div>
+      </div>
+    </Route>
+	 </div>
   </div>
 </Router>
 
 <style>
+
+.canvas {
+  display: flex;
+  direction: row;
+}
 
 .container {
   margin: 2.5em;
@@ -88,10 +95,6 @@ onMount(async() => {
 	display: flex;
 	flex-direction: column;
   /* background-color: lightgreen; */
-}
-
-.container button {
-
 }
 
 

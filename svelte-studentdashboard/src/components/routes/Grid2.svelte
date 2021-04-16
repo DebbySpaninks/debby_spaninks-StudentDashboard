@@ -1,12 +1,12 @@
 <script>
 
 // imports
-import { tick} from 'svelte';
+import { tick } from 'svelte';
 
 // props
 export let options = {};
 export let data;
-export let sizes = {}
+export let sizes = {};
 
 // local state
 let grid;
@@ -16,8 +16,8 @@ let selected = false;
 let focused = false;
 let editing = false;
 let lastCell = false;
-let calculated = {}
-let cellsContainingFormula = new Set();
+const calculated = {};
+const cellsContainingFormula = new Set();
 let editor;
 
 // option defaults
@@ -28,7 +28,7 @@ const defaults = {
   defaultHeight: 2,
   rows: true,
   columns: true
-}
+};
 
 $: em = grid ? Number(getComputedStyle(grid, '').fontSize.match(/(\d+(\.\d+)?)px$/)[1]) : 16;
 $: options = MergeRecursive(defaults, options);
@@ -56,9 +56,9 @@ function evaluateFormula(f) {
     return 10;
   }
   if (f[0] === '=') {
-    f = f.substr(1,999);
+    f = f.substr(1, 999);
   }
-  return 'result of '+f;
+  return 'result of ' + f;
 }
 
 // function recalcSheets() {
@@ -72,9 +72,9 @@ export function findCellsContainingFormula(e) {
   // cellsContainingFormula.clear();
   for (let row = 0; row < data.length; row++) {
     for (let col = 0; col < data[row].length; col++) {
-      if (data[row][col] && data[row][col][0] === '=' ) {
+      if (data[row][col] && data[row][col][0] === '=') {
         calculated[row] = calculated[row] || {};
-        calculated[row][col] = evaluateFormula(data[row][col])
+        calculated[row][col] = evaluateFormula(data[row][col]);
         // cellsContainingFormula.add({row, cell})
       }
     }
@@ -85,7 +85,7 @@ export function findCellsContainingFormula(e) {
 
 function getElementIndex(node) {
   var index = 0;
-  while ( (node = node.previousElementSibling) ) {
+  while ((node = node.previousElementSibling)) {
     index++;
   }
   return index;
@@ -95,19 +95,19 @@ function getCellFromPoint(x, y) {
   const result = {
     col: -1,
     row: -1
-  }
+  };
   let j = 0;
   let sum = 0;
   while (x >= sum) {
     result.col++;
-    sum += sizes && sizes['c'+j] ? sizes['c'+j] : options.defaultWidth,
+    sum += sizes && sizes['c' + j] ? sizes['c' + j] : options.defaultWidth,
     j++;
   }
   j = 0;
   sum = 0;
   while (y >= sum) {
     result.row++;
-    sum += sizes && sizes['r'+j] ? sizes['r'+j] : options.defaultHeight,
+    sum += sizes && sizes['r' + j] ? sizes['r' + j] : options.defaultHeight,
     j++;
   }
   return result;
@@ -121,21 +121,21 @@ function hDown(e, index, columns = true) {
     columns: columns,
     index: index,
     orig: columns ?
-      (sizes && sizes['c'+index] ? sizes['c'+index] : options.defaultWidth) :
-      (sizes && sizes['r'+index] ? sizes['r'+index] : options.defaultHeight),
+      (sizes && sizes['c' + index] ? sizes['c' + index] : options.defaultWidth) :
+      (sizes && sizes['r' + index] ? sizes['r' + index] : options.defaultHeight),
     start: columns ? elRect.x + elRect.width : elRect.y + elRect.height,
     em: Number(getComputedStyle(document.body, '').fontSize.match(/(\d+(\.\d+)?)px$/)[1])
-  }
+  };
 }
 
 function pDown(e) {
   selecting = true;
   e.stopPropagation();
-  const x = getElementIndex(e.target)-1;
+  const x = getElementIndex(e.target) - 1;
   const y = getElementIndex(e.target.parentElement);
   const isColumnHeader = (e.target.tagName === 'FIXEDCELL') && (e.target.parentElement.tagName == 'GRIDHEADER');
   const isRowHeader = (e.target.tagName === 'FIXEDCELL') && (e.target.parentElement.tagName == 'ROW');
-  const cell = {x,y};
+  const cell = { x, y };
   if (isColumnHeader) {
     selected = {
       min: {
@@ -144,13 +144,13 @@ function pDown(e) {
       },
       max: {
         x: x,
-        y: options.numRows-1
+        y: options.numRows - 1
       }
-    }
+    };
     focused = {
       x: x,
       y: 0
-    }
+    };
   }
   else if (isRowHeader) {
     selected = {
@@ -159,14 +159,14 @@ function pDown(e) {
         y: y
       },
       max: {
-        x: options.numColumns-1,
+        x: options.numColumns - 1,
         y: y
       }
-    }
+    };
     focused = {
       x: 0,
       y: y
-    }
+    };
   }
   else {
     if (e.shiftKey && focused) {
@@ -174,7 +174,7 @@ function pDown(e) {
       selected = {
         min: { x: Math.min(x, focused.x), y: Math.min(y, focused.y) },
         max: { x: Math.max(x, focused.x), y: Math.max(y, focused.y) }
-      }
+      };
       editing = false;
       lastCell = false;
     }
@@ -185,7 +185,7 @@ function pDown(e) {
       selected = {
         min: { x, y },
         max: { x, y }
-      }
+      };
     }
   }
 }
@@ -193,7 +193,7 @@ function pDown(e) {
 function pMove(e) {
   e.stopPropagation();
   if (selecting && (e.target.tagName !== 'TH')) {
-    const x = getElementIndex(e.target)-1;
+    const x = getElementIndex(e.target) - 1;
     const y = getElementIndex(e.target.parentElement);
     const minX = Math.min(x, focused.x);
     const maxX = Math.max(x, focused.x);
@@ -208,17 +208,17 @@ function pMove(e) {
         x: maxX,
         y: maxY
       }
-    }
-    lastCell = {x:x, y:y}
+    };
+    lastCell = { x:x, y:y };
   }
   else if (resizing) {
     if (resizing.columns) {
       // a header column is being resized
-      sizes['c'+resizing.index] = resizing.orig - ((resizing.start - e.clientX) / resizing.em);
+      sizes['c' + resizing.index] = resizing.orig - ((resizing.start - e.clientX) / resizing.em);
     }
     else  {
       // a row is being resized
-      sizes['r'+resizing.index] = resizing.orig - ((resizing.start - e.clientY) / resizing.em);
+      sizes['r' + resizing.index] = resizing.orig - ((resizing.start - e.clientY) / resizing.em);
     }
   }
 }
@@ -234,10 +234,10 @@ async function keyDown(e) {
     lastCell = {
       x: focused.x,
       y: focused.y
-    }
+    };
   }
   let calcsel = false;
-  switch(e.code) {
+  switch (e.code) {
     case 'ArrowUp':
       e.preventDefault();
       e.stopPropagation();
@@ -247,7 +247,7 @@ async function keyDown(e) {
         while (!found && (lastCell.y > 0)) {
           // check if cell has value
           lastCell.y--;
-          if ( (lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
+          if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
             found = (data[lastCell.y][lastCell.x] !== '');
           }
         }
@@ -276,10 +276,10 @@ async function keyDown(e) {
       if (e.ctrlKey || e.metaKey) {
         let found = false;
         // find next non-empty cell below, or last row if no non-empty cells were found
-        while (!found && (lastCell.y < (options.numRows-1))) {
+        while (!found && (lastCell.y < (options.numRows - 1))) {
           // check if cell has value
           lastCell.y++;
-          if ( (lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
+          if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
             found = (data[lastCell.y][lastCell.x] !== '');
           }
         }
@@ -292,11 +292,11 @@ async function keyDown(e) {
         }
       }
       else if (e.shiftKey) {
-        lastCell.y = lastCell.y < (options.numRows-1) ? lastCell.y + 1 : (options.numRows-1);
+        lastCell.y = lastCell.y < (options.numRows - 1) ? lastCell.y + 1 : (options.numRows - 1);
         calcsel = true;
       }
       else {
-        focused.y = focused.y < (options.numRows-1) ? focused.y + 1 : (options.numRows-1);
+        focused.y = focused.y < (options.numRows - 1) ? focused.y + 1 : (options.numRows - 1);
         selected = false;
         lastCell = false;
       }
@@ -308,10 +308,10 @@ async function keyDown(e) {
       if (e.ctrlKey || e.metaKey) {
         let found = false;
         // find next non-empty cell above, or first row if no non-empty cells were found
-        while (!found && (lastCell.x < options.numColumns-1)) {
+        while (!found && (lastCell.x < options.numColumns - 1)) {
           // check if cell has value
           lastCell.x++;
-          if ( (lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
+          if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
             found = (data[lastCell.y][lastCell.x] !== '');
           }
         }
@@ -324,11 +324,11 @@ async function keyDown(e) {
         }
       }
       else if (e.shiftKey) {
-        lastCell.x = lastCell.x < (options.numColumns-1) ? lastCell.x + 1 : (options.numColumns-1);
+        lastCell.x = lastCell.x < (options.numColumns - 1) ? lastCell.x + 1 : (options.numColumns - 1);
         calcsel = true;
       }
       else {
-        focused.x = focused.x < (options.numColumns-1) ? focused.x + 1 : (options.numColumns-1);
+        focused.x = focused.x < (options.numColumns - 1) ? focused.x + 1 : (options.numColumns - 1);
         selected = false;
         lastCell = false;
       }
@@ -343,7 +343,7 @@ async function keyDown(e) {
         while (!found && (lastCell.x > 0)) {
           // check if cell has value
           lastCell.x--;
-          if ( (lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
+          if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
             found = (data[lastCell.y][lastCell.x] !== '');
           }
         }
@@ -371,15 +371,15 @@ async function keyDown(e) {
       e.stopPropagation();
       const atLeastTwoCellsSelected = selected && ((selected.min.x != selected.max.x) || (selected.min.y != selected.max.y));
       const firstColumn = atLeastTwoCellsSelected ? selected.min.x : 0;
-      const lastColumn = atLeastTwoCellsSelected ? selected.max.x : options.numColumns-1;
+      const lastColumn = atLeastTwoCellsSelected ? selected.max.x : options.numColumns - 1;
       const firstRow = atLeastTwoCellsSelected ? selected.min.y : 0;
-      const lastRow = atLeastTwoCellsSelected ? selected.max.y : options.numRows-1;
+      const lastRow = atLeastTwoCellsSelected ? selected.max.y : options.numRows - 1;
       if (e.shiftKey) {
         if (focused.x > firstColumn) {
           focused.x--;
         }
         else {
-          if (focused.y>0) {
+          if (focused.y > 0) {
             focused.x = lastColumn;
           }
           if (focused.y > firstRow) {
@@ -390,7 +390,7 @@ async function keyDown(e) {
       else {
         if (focused.x == lastColumn) {
           focused.x = firstColumn;
-          focused.y = focused.y < lastRow ? focused.y+1 : firstRow;
+          focused.y = focused.y < lastRow ? focused.y + 1 : firstRow;
         }
         else {
           focused.x++;
@@ -399,7 +399,7 @@ async function keyDown(e) {
       grid.focus();
       break;
     case 'Enter':
-      focused.y = focused.y < (options.numRows-1) ? focused.y + 1 : (options.numRows-1);
+      focused.y = focused.y < (options.numRows - 1) ? focused.y + 1 : (options.numRows - 1);
       selected = false;
       grid.focus();
       break;
@@ -415,10 +415,10 @@ async function keyDown(e) {
     default:
       if (!editing) {
         // ensure data array is large enough to contain focused cell
-        while(data.length <= focused.y) {
+        while (data.length <= focused.y) {
           data.push([]);
         }
-        while(data[focused.y].length <= focused.x) {
+        while (data[focused.y].length <= focused.x) {
           data[focused.y].push('');
         }
         editing = true;
@@ -443,15 +443,15 @@ async function keyDown(e) {
         x: maxX,
         y: maxY
       }
-    }
+    };
   }
 }
 
 async function editCell(e, row, col) {
-  while(data.length <= focused.y) {
+  while (data.length <= focused.y) {
     data.push([]);
   }
-  while(data[focused.y].length <= focused.x) {
+  while (data[focused.y].length <= focused.x) {
     data[focused.y].push('');
   }
   editing = true;
@@ -461,13 +461,13 @@ async function editCell(e, row, col) {
 }
 
 function colName(i) {
-  const n = Math.floor(i/26);
+  const n = Math.floor(i / 26);
   const rest = i % 26;
   let result = '';
-  for (let counter=0; counter<n; counter++) {
-    result += 'A'
+  for (let counter = 0; counter < n; counter++) {
+    result += 'A';
   }
-  result += String.fromCharCode(65+rest);
+  result += String.fromCharCode(65 + rest);
   return result;
   // return String.fromCharCode(65+i);
 }
@@ -495,27 +495,27 @@ function MergeRecursive(obj1, obj2) {
 }
 
 function calcSelBox(selected) {
-  let left=48, right=48, top=24, bottom= 24;
-  for (let i=0; i<selected.min.x; i++) {
-    left += sizes['c'+i] ? sizes['c'+i]*12 : (options.defaultWidth*12)
+  let left = 4 * em, right = 4 * em, top = 2 * em, bottom = 2 * em;
+  for (let i = 0; i < selected.min.x; i++) {
+    left += sizes['c' + i] ? sizes['c' + i] * em : (options.defaultWidth * em);
   }
-  for (let i=0; i<=selected.max.x; i++) {
-    right += sizes['c'+i] ? sizes['c'+i]*12 : (options.defaultWidth*12)
+  for (let i = 0; i <= selected.max.x; i++) {
+    right += sizes['c' + i] ? sizes['c' + i] * em : (options.defaultWidth * em);
   }
-  for (let i=0; i<selected.min.y; i++) {
-    top += (1 + sizes['r'+i] ? sizes['r'+i]*12 : (options.defaultHeight*12))
+  for (let i = 0; i < selected.min.y; i++) {
+    top += (1 + sizes['r' + i] ? sizes['r' + i] * em : (options.defaultHeight * em));
   }
-  for (let i=0; i<=selected.max.y; i++) {
-    bottom += (1 + sizes['r'+i] ? sizes['r'+i]*12 : (options.defaultHeight*12))
+  for (let i = 0; i <= selected.max.y; i++) {
+    bottom += (1 + sizes['r' + i] ? sizes['r' + i] * em : (options.defaultHeight * em));
   }
-  left -= (selected.min.x+1);
-  right -= (selected.max.x+3);
+  left -= (selected.min.x + 1);
+  right -= (selected.max.x + 3);
   return {
     left: left,
-    width: right-left,
-    top: top-1,
-    height: (bottom-top)-1
-  }
+    width: right - left,
+    top: top - 1,
+    height: (bottom - top) - 1
+  };
 }
 
 
@@ -531,7 +531,7 @@ function calcSelBox(selected) {
         {#each Array(options.numColumns).fill() as col, ci}
           <fixedcell class:hresizing={resizing}
                 class:sel={selected && (ci >= selected.min.x && ci <= selected.max.x) || focused.x == ci}
-                style="min-width: {sizes && sizes['c'+ci] ? sizes['c'+ci]: options.defaultWidth}em; max-width: {sizes && sizes['c'+ci]? sizes['c'+ci]: options.defaultWidth}em;"
+                style="min-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em; max-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em;"
                 >
             {colName(ci)}
             <hresizer class:silent={resizing} on:pointerdown={e => hDown(e, ci, true)} />
@@ -541,18 +541,18 @@ function calcSelBox(selected) {
     {/if}
     <rows>
       {#each Array(options.numRows).fill() as _, ri}
-        <row style="height: {sizes && sizes['r'+ri] ? sizes['r'+ri] : options.defaultHeight}em;">
+        <row style="height: {sizes && sizes['r' + ri] ? sizes['r' + ri] : options.defaultHeight}em;">
           {#each Array(options.numColumns).fill() as col, ci}
-            {#if options.rows && ci===0}
+            {#if options.rows && ci === 0}
               <fixedcell class:vresizing={resizing} class:sel={selected && (ri >= selected.min.y && ri <= selected.max.y) || focused.y == ri}>
-                {ri+1}
+                {ri + 1}
                 <vresizer class:silent={resizing} on:pointerdown={e => hDown(e, ri, false)} />
               </fixedcell>
             {/if}
-            <cell style="min-width: {sizes && sizes['c'+ci] ? sizes['c'+ci]: options.defaultWidth}em; max-width: {sizes && sizes['c'+ci]? sizes['c'+ci]: options.defaultWidth}em;"
+            <cell style="min-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em; max-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em;"
               class:focused={focused && focused.x == ci && focused.y == ri}
               class:sel={selected && (ci >= selected.min.x) && (ci <= selected.max.x) && (ri >= selected.min.y) && (ri <= selected.max.y)}
-              on:dblclick={(e) => editCell(e, ri, ci)}
+              on:dblclick={e => editCell(e, ri, ci)}
             >
               {#if editing && focused && focused.x == ci && focused.y == ri}
                 <input bind:this={editor} on:blur={parseValue} type='text' bind:value={data[ri][ci]}>
@@ -579,15 +579,7 @@ function calcSelBox(selected) {
 </grid>
 
 
-<style type="text/less">
-
-@border: #2196F3;
-@header: #F8F9FA;
-@headerborder: #C0C0C0;
-@selected: #E9F0FC;
-@selectedheader: #E8EAED;
-@cellborder: #E2E2E3;
-
+<style>
 grid {
   width: 100%;
   height: 100%;
@@ -596,18 +588,16 @@ grid {
   overflow: scroll;
   position: relative;
 }
-
 selectionbox {
   position: absolute;
   border: 1px solid #1f91f4;
   pointer-events: none;
 }
-
 .replicator {
   position: absolute;
   font-size: 0;
   cursor: crosshair;
-  background-color: rgb(75, 137, 255);
+  background-color: #4b89ff;
   height: 6px;
   width: 6px;
   border: 1px solid #fff;
@@ -617,11 +607,9 @@ selectionbox {
   bottom: -4px;
   right: -4px;
 }
-
 .replicator.busy {
   pointer-events: none;
 }
-
 gridcontainer {
   position: relative;
   border-collapse: collapse;
@@ -629,11 +617,10 @@ gridcontainer {
   -webkit-user-select: none;
   display: flex;
   flex-direction: column;
-  &:focus {
-    outline: none;
-  }
 }
-
+gridcontainer:focus {
+  outline: none;
+}
 gridheader {
   position: sticky;
   top: 0;
@@ -641,34 +628,33 @@ gridheader {
   flex: 0;
   white-space: nowrap;
   display: flex;
-  &>fixedcell {
-    border: 1px solid @headerborder;
-    text-align: left;
-    cursor: s-resize;
-    margin-left: -1px;
-    &.sel {
-      background: @selectedheader
-    }
-    &:first-child {
-      z-index: 201;
-      margin-left: 0;
-    }
-  }
 }
-
+gridheader > fixedcell {
+  border: 1px solid #C0C0C0;
+  text-align: left;
+  cursor: s-resize;
+  margin-left: -1px;
+}
+gridheader > fixedcell.sel {
+  background: #E8EAED;
+}
+gridheader > fixedcell:first-child {
+  z-index: 201;
+  margin-left: 0;
+}
 row {
   display: flex;
 }
-
 fixedcell {
-  position: -webkit-sticky; /* for Safari */
+  position: -webkit-sticky;
+  /* for Safari */
   position: sticky;
   left: 0;
   z-index: 101;
   padding: 0 .4em;
-  background: @header;
-  border-bottom: 1px solid @headerborder;
-  border-right: 1px solid @headerborder;
+  background: #F8F9FA;
+  border-bottom: 1px solid #C0C0C0;
+  border-right: 1px solid #C0C0C0;
   font-weight: normal;
   text-align: right;
   color: #888;
@@ -678,14 +664,13 @@ fixedcell {
   display: inline-block;
   width: 4em;
   flex-shrink: 0;
-  &.sel {
-    background: @selectedheader;
-  }
 }
-
+fixedcell.sel {
+  background: #E8EAED;
+}
 cell {
   padding: 0 .3em;
-  border: 1px solid @cellborder;
+  border: 1px solid #E2E2E3;
   text-align: left;
   line-height: 2em;
   margin-top: -1px;
@@ -695,46 +680,43 @@ cell {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  &.right {
-    text-align: right;
-  }
-  &.center {
-    text-align: center;
-  }
-  &>input {
-    font-family: inherit;
-    font-weight: inherit;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font-size: inherit;
-    box-sizing: border-box;
-    width: 100%;
-    outline: none;
-  }
-  &.sel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #005eff;
-    opacity: .1;
-  }
 }
-
+cell.right {
+  text-align: right;
+}
+cell.center {
+  text-align: center;
+}
+cell > input {
+  font-family: inherit;
+  font-weight: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+}
+cell.sel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #005eff;
+  opacity: .1;
+}
 .focused {
-  border-color: @border;
+  border-color: #2196F3;
   z-index: 100;
-  outline: 1px solid @border;
+  outline: 1px solid #2196F3;
   outline-offset: -2px;
 }
-
 .silent {
   pointer-events: none;
 }
-
 vresizer {
   bottom: 0;
   width: 100%;
@@ -743,11 +725,9 @@ vresizer {
   cursor: ns-resize;
   position: absolute;
 }
-
 .vresizing {
   cursor: ns-resize;
 }
-
 hresizer {
   right: 0;
   height: 100%;
@@ -756,9 +736,7 @@ hresizer {
   cursor: ew-resize;
   position: absolute;
 }
-
 .hresizing {
   cursor: ew-resize;
 }
-
 </style>
