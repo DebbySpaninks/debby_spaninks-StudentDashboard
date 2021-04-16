@@ -1,14 +1,19 @@
 <script>
 import { Router, Link, Route } from 'svelte-navigator';
+import Home from './components/routes/Home.svelte';
 import BarChart from './components/routes/BarChart.svelte';
-import Grid from './components/routes/Grid.svelte';
-import StudentList from './components/StudentList.svelte';
+import Grid from './components/routes/Grid2.svelte';
+import List from './components/List.svelte';
 import { onMount } from 'svelte';
 
-// \n = new line character                 // nog voor.map invoegen .filter(arr => !Array.isArray(arr) || arr.length === 0 : )
-const parseCSV = text => text.split('\n').map(row => row.split(','));
+// \n = new line character
+const parseCSV = text => text.split('\n').filter(line => line.trim() !== '').map(row => row.split(','));
 
 let studentdata = false;
+// array van alle studentnamen (studentdata.map(row => row[0])
+$: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].sort() : [];
+
+
 let sizes = {};
 $: console.log(sizes);
 
@@ -33,8 +38,8 @@ onMount(async() => {
   try {
   // read csv file
     const response = await fetch('/studentdata.csv');
-    // console.log('The studentdata in onMount function ', studentdata);
     const responseAsText = await response.text();
+    // console.log('The responseAsText in onMount function ', responseAsText);
     setTimeout(function resTimeOut() {
       studentdata = parseCSV(responseAsText);
     }, 100);
@@ -50,16 +55,20 @@ onMount(async() => {
  <div class="container">
 	<nav>
     <Link to="/"><button class="btn-home">Home</button></Link>
-    <Link to="/"><button class="btn-barchart">Staafdiagram</button></Link>
+    <Link to="barchart"><button class="btn-barchart">Staafdiagram</button></Link>
     <Link to="grid"><button class="btn-table">Tabel overzicht</button></Link>
 	</nav>
 	<div>
     <sidebar>
-      <StudentList listItems={studentdata[0]}/>
+      <List listItems={studentnames}/>
     </sidebar>
-		<Route exact path="/">
-			<BarChart class="bartchart" data={studentdata}/>
-		</Route>
+    <Route exact path="/">
+      <Home />
+    </Route>
+    <Route path="barchart">
+      <BarChart />
+      <!-- <BarChart class="bartchart" data={studentdata}/> -->
+    </Route>
       <Route path="grid" >
       {#if !studentdata}
         <div>Even geduld...</div>
@@ -78,7 +87,7 @@ onMount(async() => {
   padding: 1em;
 	display: flex;
 	flex-direction: column;
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
 }
 
 .container button {

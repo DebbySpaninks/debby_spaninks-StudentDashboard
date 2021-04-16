@@ -293,7 +293,7 @@ $: console.log(options);
 
 </script>
 
-<h1>Dit is het display component van Grid</h1>
+<h1>Header van Tabel overzicht</h1>
 
 <svelte:window on:pointermove={pMove} on:pointerup={pUp} />
 

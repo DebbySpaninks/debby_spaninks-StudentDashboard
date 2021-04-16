@@ -3,13 +3,13 @@
 
 <!-- Remove old Grid if not used -->
 
-<script>
+<!-- <script>
   export let rows = [];
-</script>
+</script> -->
 
 <!-- <textarea value={JSON.stringify(data)} /> -->
 
-<table>
+<!-- <table>
   {#each rows as row, i}
   <tr>
     <td>{i + 1}</td>
@@ -18,11 +18,11 @@
     {/each}
   </tr>
   {/each}
-</table>
+</table> -->
 
 
 
-<style>
+<!-- <style>
   table {
     box-sizing: border-box;
     padding: 0;
@@ -34,4 +34,4 @@
     background-color: red;
     overflow: auto;
   }
-</style>
+</style> -->

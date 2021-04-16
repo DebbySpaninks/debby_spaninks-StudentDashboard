@@ -5,7 +5,7 @@
 </script>
 
 <main>
-
+  <h1>Header van Staafdiagram</h1>
 </main>
 
 <style>
