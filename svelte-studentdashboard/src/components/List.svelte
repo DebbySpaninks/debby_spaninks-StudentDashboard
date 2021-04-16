@@ -1,4 +1,4 @@
-<!-- Component to display StudentList -->
+<!-- Component to display List -->
 
 <script>
   export let items = [];
