@@ -17,6 +17,10 @@ $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].s
 let sizes = {};
 $: console.log(sizes);
 
+// function handleClick(e) {
+//   console.log(e.detail);
+// };
+
 // function saveData(e) {
 //   console.log('saving in local storage');
 //   localStorage['demo'] = JSON.stringify({
@@ -70,7 +74,8 @@ onMount(async() => {
 
     <Route path="grid" >
       <div class="canvas">
-        <List items={studentnames}/>
+                                    <!-- ipv console.log op alle studentnames moet het op de naam die (geclicked) getarget wordt -->
+        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
