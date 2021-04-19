@@ -5,12 +5,14 @@
 
   export let items = [];
 
-	let dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 </script>
 
   <ul>
   {#each items as item}
     <li on:click={() => dispatch('click')}>{item}</li>
+  {:else}
+    <h3>Helaas geen studenten aanwezig</h3>
   {/each}
 </ul>
 
