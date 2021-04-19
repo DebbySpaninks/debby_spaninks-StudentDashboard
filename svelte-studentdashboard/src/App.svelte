@@ -13,8 +13,6 @@ let studentdata = false;
 // array of all studentnames (studentdata.map(row => row[0])
 $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].sort() : [];
 
-
-
 let sizes = {};
 $: console.log(sizes);
 
@@ -73,7 +71,7 @@ onMount(async() => {
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
           <div class="chart">
             <h1>Header Staafdiagram</h1>
-            <BarChart />
+            <BarChart names={studentnames}/>
             <!-- <BarChart class="bartchart" data={studentdata}/> -->
           </div>
       </div>
