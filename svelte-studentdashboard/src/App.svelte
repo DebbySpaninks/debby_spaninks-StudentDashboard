@@ -16,6 +16,8 @@ $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].s
 $: studentassignments = studentdata ? [ ...new Set(studentdata.map(row => row[1])) ].sort() : [];
 console.log(studentassignments);
 
+// const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+
 
 let sizes = {};
 $: console.log(sizes);

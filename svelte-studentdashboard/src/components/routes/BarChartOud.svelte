@@ -14,7 +14,7 @@ $: data = {
   datasets: [
     {
       label: 'Leuk',
-      data: [ 15, 19, 11, 7, 15, 8, 11, 7, 15, 8 ],
+      data: [ 1, 1, 4, 3, 5, 2, 1, 2, 5, 3 ],
       backgroundColor:
         'rgba(113, 205, 205,0.4)',
       borderWidth: 2,
@@ -23,7 +23,7 @@ $: data = {
     },
     {
       label: 'Moeilijk',
-      data: [ 15, 19, 11, 7, 15, 8, 11, 7, 15, 8 ],
+      data: [ 5, 4, 1, 5, 1, 2, 1, 5, 3, 2 ],
       backgroundColor:
         'rgba(255, 134,159,0.4)',
       borderWidth: 2,
