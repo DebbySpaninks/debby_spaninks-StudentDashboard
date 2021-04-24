@@ -74,8 +74,7 @@ onMount(async() => {
 
     <Route path="grid" >
       <div class="canvas">
-                                    <!-- ipv console.log op alle studentnames moet het op de naam die (geclicked) getarget wordt -->
-        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
+        <List on:click={() => console.log('clicked', studentnames} items={studentnames}/>
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
