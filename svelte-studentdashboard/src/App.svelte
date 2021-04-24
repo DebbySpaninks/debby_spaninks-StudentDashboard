@@ -1,8 +1,9 @@
 <script>
-import { Router, Link, Route } from 'svelte-navigator';
-import Home from './components/routes/Home.svelte';
+import { Router, Route } from 'svelte-navigator';
+import Header from './components/Header.svelte';
+// import Home from './components/routes/Home.svelte';
 import BarChart from './components/routes/BarChart.svelte';
-import Grid from './components/routes/Grid2.svelte';
+import Grid from './components/routes/Grid.svelte';
 import List from './components/List.svelte';
 import { onMount } from 'svelte';
 
@@ -12,30 +13,15 @@ const parseCSV = text => text.split('\n').filter(line => line.trim() !== '').map
 let studentdata = false;
 // array of all studentnames (studentdata.map(row => row[0])
 $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].sort() : [];
+$: studentassignments = studentdata ? [ ...new Set(studentdata.map(row => row[1])) ].sort() : [];
+console.log(studentassignments);
+
+// const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 
 let sizes = {};
 $: console.log(sizes);
 
-// function handleClick(e) {
-//   console.log(e.detail);
-// };
-
-// function saveData(e) {
-//   console.log('saving in local storage');
-//   localStorage['demo'] = JSON.stringify({
-//     meta: {
-//       title: 'demo sheet'
-//     },
-//     data: studentdata,
-//     sizes: sizes
-//   });
-// }
-//
-// function loadData(e) {
-//   console.log('loading from local storage');
-//   ({ studentdata, sizes } = JSON.parse(localStorage['demo'] || '{data: [], sizes: {}}'));
-// }
 
 onMount(async() => {
   console.log('Mounted');
@@ -57,31 +43,45 @@ onMount(async() => {
 
 <Router>
  <div class="container">
-	<nav>
-    <Link to="/"><button class="btn-home">Home</button></Link>
-    <Link to="barchart"><button class="btn-barchart">Staafdiagram</button></Link>
-    <Link to="grid"><button class="btn-table">Tabel overzicht</button></Link>
-	</nav>
+   <Header />
 
   <div>
     <Route exact path="/">
-      <Home />
+      <div class="canvas">
+        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
+          <div class="chart">
+            <h1>Staafdiagram</h1>
+            <BarChart names={studentnames}/>
+            <!-- <BarChart class="bartchart" data={studentdata}/> -->
+          </div>
+      </div>
     </Route>
     <Route path="barchart">
-      <BarChart />
-      <!-- <BarChart class="bartchart" data={studentdata}/> -->
+      <div class="canvas">
+        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
+          <div class="chart">
+            <h1>Staafdiagram</h1>
+            <BarChart names={studentnames}/>
+            <!-- <BarChart class="bartchart" data={studentdata}/> -->
+          </div>
+      </div>
     </Route>
 
     <Route path="grid" >
       <div class="canvas">
-        <List on:click={() => console.log('clicked', studentnames} items={studentnames}/>
+                  <!-- ipv console.log op alle studentnames moet het op de naam die (geclicked) getarget wordt -->
+        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
+      <div class="grid-container">
+        <h1>Tabel-overzicht</h1>
         <Grid class="grid" bind:data={studentdata} bind:sizes />
+      </div>
       {/if}
       </div>
     </Route>
+
 	 </div>
   </div>
 </Router>
@@ -101,5 +101,8 @@ onMount(async() => {
   /* background-color: lightgreen; */
 }
 
+.chart, .grid-container {
+  padding-left: 2em;
+}
 
 </style>
