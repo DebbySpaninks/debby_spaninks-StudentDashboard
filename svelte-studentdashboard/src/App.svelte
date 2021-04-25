@@ -13,8 +13,8 @@ const parseCSV = text => text.split('\n').filter(line => line.trim() !== '').map
 let studentdata = false;
 // array of all studentnames (studentdata.map(row => row[0])
 $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].sort() : [];
-$: studentassignments = studentdata ? [ ...new Set(studentdata.map(row => row[1])) ].sort() : [];
-console.log(studentassignments);
+// $: studentassignments = studentdata ? [ ...new Set(studentdata.map(row => row[1])) ].sort() : [];
+// console.log(studentassignments);
 
 const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
@@ -46,7 +46,7 @@ onMount(async() => {
  <div class="container">
    <Header />
 
-  <div>
+  <main>
     <Route exact path="/">
       <div class="canvas">
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
@@ -60,7 +60,6 @@ onMount(async() => {
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
           <div class="chart">
             <BarChart items={studentnames}/>
-            <!-- <BarChart class="bartchart" data={studentdata}/> -->
           </div>
       </div>
     </Route>
@@ -79,7 +78,7 @@ onMount(async() => {
       </div>
     </Route>
 
-	 </div>
+  </main>
   </div>
 </Router>
 
@@ -92,16 +91,13 @@ h1 {
 
 .canvas {
   display: flex;
-  direction: row;
+  /* direction: row; */
 }
 
 .container {
   margin: 1em 2.5em;
-  /* margin-top: 1em; */
   padding: 1em;
-	display: flex;
-	flex-direction: column;
-  /* background-color: lightgreen; */
+	/* flex-direction: column; */
 }
 
 .chart, .grid-container {

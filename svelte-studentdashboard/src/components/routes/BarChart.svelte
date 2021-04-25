@@ -19,7 +19,7 @@
 
 <style>
   svg {
-    background-color: #DBEBF7;
+    background-color: #F3F4F5;
     width: 50em;
     height: 17.6em;
   }
