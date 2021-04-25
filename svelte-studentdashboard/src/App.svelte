@@ -16,7 +16,8 @@ $: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].s
 $: studentassignments = studentdata ? [ ...new Set(studentdata.map(row => row[1])) ].sort() : [];
 console.log(studentassignments);
 
-// const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+
 
 
 let sizes = {};
@@ -50,9 +51,7 @@ onMount(async() => {
       <div class="canvas">
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
           <div class="chart">
-            <h1>Staafdiagram</h1>
-            <BarChart names={studentnames}/>
-            <!-- <BarChart class="bartchart" data={studentdata}/> -->
+            <BarChart items={studentnames}/>
           </div>
       </div>
     </Route>
@@ -60,8 +59,7 @@ onMount(async() => {
       <div class="canvas">
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
           <div class="chart">
-            <h1>Staafdiagram</h1>
-            <BarChart names={studentnames}/>
+            <BarChart items={studentnames}/>
             <!-- <BarChart class="bartchart" data={studentdata}/> -->
           </div>
       </div>
@@ -75,7 +73,6 @@ onMount(async() => {
         <div>Even geduld...</div>
       {:else}
       <div class="grid-container">
-        <h1>Tabel-overzicht</h1>
         <Grid class="grid" bind:data={studentdata} bind:sizes />
       </div>
       {/if}
@@ -88,13 +85,19 @@ onMount(async() => {
 
 <style>
 
+h1 {
+  margin: 0;
+  max-width: 8em;
+}
+
 .canvas {
   display: flex;
   direction: row;
 }
 
 .container {
-  margin: 2.5em;
+  margin: 1em 2.5em;
+  /* margin-top: 1em; */
   padding: 1em;
 	display: flex;
 	flex-direction: column;
