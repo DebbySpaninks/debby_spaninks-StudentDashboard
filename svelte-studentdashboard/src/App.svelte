@@ -11,12 +11,18 @@ import { onMount } from 'svelte';
 const parseCSV = text => text.split('\n').filter(line => line.trim() !== '').map(row => row.split(','));
 
 let studentdata = false;
-// array of all studentnames (studentdata.map(row => row[0])
-$: studentnames = studentdata ? [ ...new Set(studentdata.map(row => row[0])) ].sort() : [];
-// $: studentassignments = studentdata ? [ ...new Set(studentdata.map(row => row[1])) ].sort() : [];
-// console.log(studentassignments);
 
-const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+// const average = rating => rating.reduce((a, b) => a + b, 0) / rating.length;
+
+// array of all studentnames (studentdata.map(row => row[0])
+const uniqueItems = index => [ ...new Set(studentdata.map(row => row[index])) ].sort();
+const extractCol = index => studentdata.map(row => row[index]);
+
+$: studentnames = studentdata ? uniqueItems(0) : [];
+$: assignments = studentdata ? uniqueItems(1) : [];
+$: difficultyRating = studentdata ? extractCol(2) : [];
+$: enjoymentRating = studentdata ? extractCol(3) : [];
+
 
 
 
@@ -84,10 +90,10 @@ onMount(async() => {
 
 <style>
 
-h1 {
+/* h1 {
   margin: 0;
   max-width: 8em;
-}
+} */
 
 .canvas {
   display: flex;
