@@ -19,5 +19,6 @@ const dispatch = createEventDispatcher();
 <style>
   ul {
     list-style-type: none;
+    height: 19.7em;
   }
 </style>
