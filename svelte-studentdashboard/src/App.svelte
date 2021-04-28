@@ -23,12 +23,8 @@ $: assignments = studentdata ? uniqueItems(1) : [];
 $: difficultyRating = studentdata ? extractCol(2) : [];
 $: enjoymentRating = studentdata ? extractCol(3) : [];
 
-
-
-
 let sizes = {};
 $: console.log(sizes);
-
 
 onMount(async() => {
   console.log('Mounted');
@@ -36,7 +32,6 @@ onMount(async() => {
   // read csv file
     const response = await fetch('/studentdata.csv');
     const responseAsText = await response.text();
-    // console.log('The responseAsText in onMount function ', responseAsText);
     setTimeout(function resTimeOut() {
       studentdata = parseCSV(responseAsText);
     }, 100);
@@ -57,7 +52,11 @@ onMount(async() => {
       <div class="canvas">
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
           <div class="chart">
-            <BarChart items={studentnames}/>
+            <BarChart
+              bind:xTicks={assignments}
+              bind:diffScores={difficultyRating}
+              bind:enjoyScores={enjoymentRating}
+            />
           </div>
       </div>
     </Route>
@@ -65,7 +64,11 @@ onMount(async() => {
       <div class="canvas">
         <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
           <div class="chart">
-            <BarChart items={studentnames}/>
+            <BarChart
+              bind:xTicks={assignments}
+              bind:diffScores={difficultyRating}
+              bind:enjoyScores={enjoymentRating}
+            />
           </div>
       </div>
     </Route>
