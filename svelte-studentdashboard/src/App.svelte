@@ -50,7 +50,7 @@ onMount(async() => {
   <main>
     <Route exact path="/">
       <div class="canvas">
-        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
+        <List items={studentnames}/>
           <div class="chart">
             <BarChart
               bind:xTicks={assignments}
@@ -62,7 +62,7 @@ onMount(async() => {
     </Route>
     <Route path="barchart">
       <div class="canvas">
-        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
+          <List items={studentnames}/>
           <div class="chart">
             <BarChart
               bind:xTicks={assignments}
@@ -75,8 +75,7 @@ onMount(async() => {
 
     <Route path="grid" >
       <div class="canvas">
-                  <!-- ipv console.log op alle studentnames moet het op de naam die (geclicked) getarget wordt -->
-        <List on:click={() => console.log('clicked', studentnames)} items={studentnames}/>
+        <List items={studentnames}/>
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
