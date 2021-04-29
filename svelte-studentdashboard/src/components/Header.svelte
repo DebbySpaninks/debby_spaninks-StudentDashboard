@@ -2,30 +2,44 @@
 
 <script>
 import { Link } from 'svelte-navigator';
+// import List from './components/List.svelte';
 
-let title = "Staafdiagram";
+let title = 'Staafdiagram';
 
-function handleClick(e) {
-title = title === "Tabel-overzicht" ? "Staafdiagram" : "Staafdiagram"
+function handleClick() {
+  title = title === 'Tabel-overzicht' ? 'Staafdiagram' : 'Staafdiagram';
 }
 
 </script>
 
 <div class="header">
-    <h1>Student Dashboard</h1>
+  <h1>Student Dashboard</h1>
 
   <nav>
     <span>
       <h2>{title}</h2>
-      <Link to="/">
+
+      <Link to="home">
         <button on:click={handleClick}>Home</button>
       </Link>
-      <Link to="/barchart">
+
+      <Link to="staafdiagram">
         <button on:click={handleClick}>Staafdiagram</button>
       </Link>
-      <Link to="grid">
-        <button on:click={e => title = title === "Staafdiagram" ? "Tabel-overzicht" : "Tabel-overzicht"}>Tabel-overzicht</button>
+
+      <Link to="staafdiagram/student">
+        <!-- <List items={studentnames}/> -->
+        <button
+          on:click={() => title = title === 'Staafdiagram' ? 'Naam-Student' : 'Naam-Student'}>Student
+        </button>
       </Link>
+
+      <Link to="tabeloverzicht">
+        <button
+          on:click={() => title = title === 'Staafdiagram' ? 'Tabel-overzicht' : 'Tabel-overzicht'}>Tabel-overzicht
+        </button>
+      </Link>
+      
     </span>
 	</nav>
 
@@ -54,7 +68,4 @@ title = title === "Tabel-overzicht" ? "Staafdiagram" : "Staafdiagram"
   button {
     order: 1;
   }
-
-
-
 </style>

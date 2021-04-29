@@ -48,7 +48,8 @@ onMount(async() => {
    <Header />
 
   <main>
-    <Route exact path="/">
+
+    <Route basepath="/">
       <div class="canvas">
         <List items={studentnames}/>
           <div class="chart">
@@ -60,6 +61,7 @@ onMount(async() => {
           </div>
       </div>
     </Route>
+
     <Route path="barchart">
       <div class="canvas">
           <List items={studentnames}/>
@@ -73,7 +75,7 @@ onMount(async() => {
       </div>
     </Route>
 
-    <Route path="grid" >
+    <Route path="grid">
       <div class="canvas">
         <List items={studentnames}/>
       {#if !studentdata}
@@ -87,6 +89,7 @@ onMount(async() => {
     </Route>
 
   </main>
+
   </div>
 </Router>
 
