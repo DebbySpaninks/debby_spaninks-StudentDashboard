@@ -45,11 +45,12 @@ onMount(async() => {
 
 <Router>
  <div class="container">
-   <Header />
 
   <main>
 
-    <Route basepath="/">
+    <Route path="/">
+      <Header title="Home"/>
+
       <div class="canvas">
         <List items={studentnames}/>
           <div class="chart">
@@ -62,7 +63,9 @@ onMount(async() => {
       </div>
     </Route>
 
-    <Route path="barchart">
+    <Route path="staafdiagram">
+      <Header title="Staafdiagram"/>
+
       <div class="canvas">
           <List items={studentnames}/>
           <div class="chart">
@@ -75,7 +78,25 @@ onMount(async() => {
       </div>
     </Route>
 
-    <Route path="grid">
+    <Route path="staafdiagram/:id" let:params>
+      <!-- {console.log(params) || ''} -->
+      <Header title="Staafdiagram van {params.id}"/>
+
+      <div class="canvas">
+          <List items={studentnames}/>
+          <div class="chart">
+            <BarChart
+              bind:xTicks={assignments}
+              bind:diffScores={difficultyRating}
+              bind:enjoyScores={enjoymentRating}
+            />
+          </div>
+      </div>
+    </Route>
+
+    <Route path="tabeloverzicht">
+      <Header title="Tabel-overzicht"/>
+
       <div class="canvas">
         <List items={studentnames}/>
       {#if !studentdata}
