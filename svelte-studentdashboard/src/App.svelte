@@ -20,8 +20,8 @@ const extractCol = index => studentdata.map(row => row[index]);
 
 $: studentnames = studentdata ? uniqueItems(0) : [];
 $: assignments = studentdata ? uniqueItems(1) : [];
-$: difficultyRating = studentdata ? extractCol(2) : [];
-$: enjoymentRating = studentdata ? extractCol(3) : [];
+$: enjoymentRating = studentdata ? extractCol(2) : [];
+$: difficultyRating = studentdata ? extractCol(3) : [];
 
 let sizes = {};
 $: console.log(sizes);
@@ -50,14 +50,13 @@ onMount(async() => {
 
     <Route path="/">
       <Header title="Home"/>
-
       <div class="canvas">
         <List items={studentnames}/>
           <div class="chart">
             <BarChart
               bind:xTicks={assignments}
-              bind:diffScores={difficultyRating}
               bind:enjoyScores={enjoymentRating}
+              bind:diffScores={difficultyRating}
             />
           </div>
       </div>
@@ -71,24 +70,22 @@ onMount(async() => {
           <div class="chart">
             <BarChart
               bind:xTicks={assignments}
-              bind:diffScores={difficultyRating}
               bind:enjoyScores={enjoymentRating}
+              bind:diffScores={difficultyRating}
             />
           </div>
       </div>
     </Route>
 
     <Route path="staafdiagram/:id" let:params>
-      <!-- {console.log(params) || ''} -->
       <Header title="Staafdiagram van {params.id}"/>
-
       <div class="canvas">
           <List items={studentnames}/>
           <div class="chart">
             <BarChart
               bind:xTicks={assignments}
-              bind:diffScores={difficultyRating}
               bind:enjoyScores={enjoymentRating}
+              bind:diffScores={difficultyRating}
             />
           </div>
       </div>
@@ -96,15 +93,14 @@ onMount(async() => {
 
     <Route path="tabeloverzicht">
       <Header title="Tabel-overzicht"/>
-
       <div class="canvas">
         <List items={studentnames}/>
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
-      <div class="grid-container">
-        <Grid class="grid" bind:data={studentdata} bind:sizes />
-      </div>
+        <div class="grid-container">
+          <Grid class="grid" bind:data={studentdata} bind:sizes />
+        </div>
       {/if}
       </div>
     </Route>
@@ -116,20 +112,13 @@ onMount(async() => {
 
 <style>
 
-/* h1 {
-  margin: 0;
-  max-width: 8em;
-} */
-
 .canvas {
   display: flex;
-  /* direction: row; */
 }
 
 .container {
   margin: 1em 2.5em;
   padding: 1em;
-	/* flex-direction: column; */
 }
 
 .chart, .grid-container {
