@@ -5,11 +5,6 @@ import { Link } from 'svelte-navigator';
 // import List from './components/List.svelte';
 
 export let title = 'Staafdiagram';
-// const studentnames = {};
-
-// function handleClick() {
-//   title = title === 'Tabel-overzicht' ? 'Staafdiagram' : 'Staafdiagram';
-// }
 
 </script>
 
@@ -27,13 +22,6 @@ export let title = 'Staafdiagram';
       <Link to="/staafdiagram">
         <button>Staafdiagram</button>
       </Link>
-
-      <!-- <Link to="staafdiagram/student"> -->
-        <!-- <List items={studentnames} on:click={() => title = title === 'Staafdiagram' ? 'Naam-Student' : 'Naam-Student'}>Student</List> -->
-        <!-- <button
-          on:click={() => title = title === 'Staafdiagram' ? 'Naam-Student' : 'Naam-Student'}>Student
-        </button>
-      </Link> -->
 
       <Link to="/tabeloverzicht">
         <button>Tabel-overzicht</button>
