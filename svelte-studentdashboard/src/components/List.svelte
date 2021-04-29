@@ -4,6 +4,8 @@
 import { Link } from 'svelte-navigator';
 
 export let items = [];
+const yTicks = [ 5, 4, 3, 2, 1, 0 ];
+
 
 </script>
 
@@ -15,6 +17,17 @@ export let items = [];
       <h3>Helaas geen studenten aanwezig</h3>
     {/each}
   </ul>
+
+<svg>
+
+  <!-- vertical numbers -->
+  {#each yTicks as grade, i}
+    {#if grade <= 5}
+      <text class="grades" x="10" y={26 + (i * 45)}>{grade}</text>
+    {/if}
+  {/each}
+
+</svg>
 
 <style>
   ul {
