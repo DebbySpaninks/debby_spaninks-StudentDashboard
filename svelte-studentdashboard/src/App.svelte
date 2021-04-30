@@ -12,8 +12,6 @@ const parseCSV = text => text.split('\n').filter(line => line.trim() !== '').map
 
 let studentdata = false;
 
-// const average = rating => rating.reduce((a, b) => a + b, 0) / rating.length;
-
 // array of all studentnames (studentdata.map(row => row[0])
 const uniqueItems = index => [ ...new Set(studentdata.map(row => row[index])) ].sort();
 const extractCol = index => studentdata.map(row => row[index]);
@@ -22,6 +20,8 @@ $: studentnames = studentdata ? uniqueItems(0) : [];
 $: assignments = studentdata ? uniqueItems(1) : [];
 $: enjoymentRating = studentdata ? extractCol(2) : [];
 $: difficultyRating = studentdata ? extractCol(3) : [];
+
+// const average = enjoy => enjoy.reduce((a, b) => a + b, 0) / enjoy.length;
 
 let sizes = {};
 $: console.log(sizes);
@@ -116,15 +116,10 @@ onMount(async() => {
 
 .canvas-grid {
   display: flex;
-  /* flex: 1; */
+  flex: 1;
   height: 100%;
   /* width: 70%; */
   overflow: auto;
-  order: 1;
-}
-
-span {
-
 }
 
 div.chart {
