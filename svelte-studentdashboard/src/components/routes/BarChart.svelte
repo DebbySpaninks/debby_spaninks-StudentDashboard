@@ -11,6 +11,14 @@
 
 </script>
 
+<!-- legend green and pink -->
+<svg width="400" height="43">
+  <rect x="70" y="13" width="30" height="15" style="fill:#00D84F;stroke:black" />
+  <text x="105" y="26" width="30" height="15">Leuk</text>
+  <rect x="165" y="13" width="30" height="15" style="fill:#FF377A;stroke:black" />
+  <text x="200" y="26" width="30" height="15">Moeilijk</text>
+</svg>
+
 <div class="svg-container">
   <div class="svg-wrapper" style="--viewboxWidth:{diffScores.length * 42}px">
 
@@ -53,11 +61,11 @@
       {/each}
 
       <!-- vertical numbers -->
-      <!-- {#each yTicks as grade, i}
+      {#each yTicks as grade, i}
         {#if grade <= 5}
           <text class="grades" x="10" y={26 + (i * 45)}>{grade}</text>
         {/if}
-      {/each} -->
+      {/each}
 
       <!-- vertical ticks and dashed lines -->
       {#each yTicks as tick, i}
@@ -79,8 +87,7 @@
 <style>
 
   .svg-container {
-    max-width: 1000px;
-    /* 56(assignments) x 20 = 1120 */
+    max-width: 1215px;
     width: 100%;
     overflow: auto;
   }
@@ -95,10 +102,9 @@
     position: sticky;
   }
 
-  .grades {
+  /* .grades {
     font-size: 0.8em;
     background-color: #F3F4F5;
-
-  }
+  } */
 
 </style>
