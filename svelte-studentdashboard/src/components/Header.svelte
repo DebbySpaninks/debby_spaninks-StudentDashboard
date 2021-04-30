@@ -9,11 +9,10 @@ export let title = 'Staafdiagram';
 </script>
 
 <div class="header">
-  <h1>Student Dashboard</h1>
 
   <nav>
-    <span>
-      <h2>{title}</h2>
+    <h1>{title}</h1>
+    <!-- <span> -->
 
       <Link to="/">
         <button>Home</button>
@@ -27,33 +26,29 @@ export let title = 'Staafdiagram';
         <button>Tabel-overzicht</button>
       </Link>
 
-    </span>
+    <!-- </span> -->
 	</nav>
 
 </div>
 
 <style>
+
+  div.header {
+    margin: 3em;
+  }
+
+  nav {
+    text-align: center;
+  }
+
   h1 {
     margin-top: 0em;
-    text-align: center;
     font-size: 3em;
   }
 
-  span {
-    display: flex;
-    justify-content:flex-end;
-    align-items: center;
-    width: 57.95em;
-  }
-
-  h2 {
-    margin: 0em 8.8em 0.5em 2em;
-    font-size: 2em;
-    order: 0;
-  }
-
   button {
-    order: 1;
+    /* order: 1; */
     white-space: nowrap;
   }
+
 </style>
