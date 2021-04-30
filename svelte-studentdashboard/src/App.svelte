@@ -49,7 +49,7 @@ onMount(async() => {
   <main>
 
     <Route path="/">
-      <Header title="Home"/>
+      <Header title="Student Dashboard"/>
       <div class="canvas">
         <List items={studentnames}/>
           <div class="chart">
@@ -123,6 +123,10 @@ onMount(async() => {
 
 .chart, .grid-container {
   padding-left: 2em;
+}
+
+div.chart {
+  padding: 0;
 }
 
 </style>
