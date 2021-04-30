@@ -12,21 +12,19 @@ export let title = 'Staafdiagram';
 
   <nav>
     <h1>{title}</h1>
-    <!-- <span> -->
 
-      <Link to="/">
-        <button>Home</button>
-      </Link>
+    <Link to="/">
+      <button>Home</button>
+    </Link>
 
-      <Link to="/staafdiagram">
-        <button>Staafdiagram</button>
-      </Link>
+    <Link to="/staafdiagram">
+      <button>Staafdiagram</button>
+    </Link>
 
-      <Link to="/tabeloverzicht">
-        <button>Tabel-overzicht</button>
-      </Link>
+    <Link to="/tabeloverzicht">
+      <button>Tabel-overzicht</button>
+    </Link>
 
-    <!-- </span> -->
 	</nav>
 
 </div>
@@ -34,7 +32,9 @@ export let title = 'Staafdiagram';
 <style>
 
   div.header {
-    margin: 3em;
+    margin: 0;
+    padding: 3em;
+    height: 200px;
   }
 
   nav {
@@ -42,7 +42,7 @@ export let title = 'Staafdiagram';
   }
 
   h1 {
-    margin-top: 0em;
+    margin: 0em 0em 0.4em;
     font-size: 3em;
   }
 

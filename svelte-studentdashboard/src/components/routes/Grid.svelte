@@ -5,7 +5,7 @@ import { tick } from 'svelte';
 
 // props
 export let options = {};
-export let data;
+export let data = [ [] ];
 export let sizes = {};
 
 // local state
@@ -100,14 +100,14 @@ function getCellFromPoint(x, y) {
   let sum = 0;
   while (x >= sum) {
     result.col++;
-    sum += sizes && sizes['c' + j] ? sizes['c' + j] : options.defaultWidth,
+    sum += sizes && sizes['c' + j] ? sizes['c' + j] : options.defaultWidth;
     j++;
   }
   j = 0;
   sum = 0;
   while (y >= sum) {
     result.row++;
-    sum += sizes && sizes['r' + j] ? sizes['r' + j] : options.defaultHeight,
+    sum += sizes && sizes['r' + j] ? sizes['r' + j] : options.defaultHeight;
     j++;
   }
   return result;
@@ -248,7 +248,7 @@ async function keyDown(e) {
           // check if cell has value
           lastCell.y--;
           if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
-            found = (data[lastCell.y][lastCell.x] !== '');
+            found = (data[lastCell.y][lastCell.x] !== '') && (data[lastCell.y][lastCell.x] !== null);
           }
         }
         if (e.shiftKey) {
@@ -280,7 +280,7 @@ async function keyDown(e) {
           // check if cell has value
           lastCell.y++;
           if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
-            found = (data[lastCell.y][lastCell.x] !== '');
+            found = (data[lastCell.y][lastCell.x] !== '') && (data[lastCell.y][lastCell.x] !== null);
           }
         }
         if (e.shiftKey) {
@@ -312,7 +312,7 @@ async function keyDown(e) {
           // check if cell has value
           lastCell.x++;
           if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
-            found = (data[lastCell.y][lastCell.x] !== '');
+            found = (data[lastCell.y][lastCell.x] !== '') && (data[lastCell.y][lastCell.x] !== null);
           }
         }
         if (e.shiftKey) {
@@ -344,7 +344,7 @@ async function keyDown(e) {
           // check if cell has value
           lastCell.x--;
           if ((lastCell.y < data.length) && (lastCell.x < data[lastCell.y].length)) {
-            found = (data[lastCell.y][lastCell.x] !== '');
+            found = (data[lastCell.y][lastCell.x] !== '') && (data[lastCell.y][lastCell.x] !== null);
           }
         }
         if (e.shiftKey) {
@@ -366,7 +366,7 @@ async function keyDown(e) {
       }
       grid.focus();
       break;
-    case 'Tab':
+    case 'Tab': {
       e.preventDefault();
       e.stopPropagation();
       const atLeastTwoCellsSelected = selected && ((selected.min.x != selected.max.x) || (selected.min.y != selected.max.y));
@@ -398,6 +398,7 @@ async function keyDown(e) {
       }
       grid.focus();
       break;
+    }
     case 'Enter':
       focused.y = focused.y < (options.numRows - 1) ? focused.y + 1 : (options.numRows - 1);
       selected = false;
@@ -523,62 +524,242 @@ function calcSelBox(selected) {
 
 <svelte:window on:pointermove={pMove} on:pointerup={pUp} />
 
-<grid class="{$$props.class || ''}">
-  <gridcontainer tabindex="0" bind:this={grid} on:keydown={keyDown} on:pointerdown={pDown}>
-    {#if options.columns}
-      <gridheader style="height: {options.defaultHeight}em;" class:hresizing={resizing}>
-        <fixedcell />
+<grid class="{$$props.class || ''}" tabindex="0" bind:this={grid} on:keydown={keyDown} on:pointerdown={pDown}>
+  {#if options.columns}
+    <gridheader style="height: {options.defaultHeight}em;" class:hresizing={resizing}>
+      <fixedcell />
+      {#each Array(options.numColumns).fill() as col, ci}
+        <fixedcell class:hresizing={resizing}
+              class:sel={selected && (ci >= selected.min.x && ci <= selected.max.x) || focused.x == ci}
+              style="min-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em; max-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em;"
+              >
+          {colName(ci)}
+          <hresizer class:silent={resizing} on:pointerdown={e => hDown(e, ci, true)} />
+        </fixedcell>
+      {/each}
+    </gridheader>
+  {/if}
+  <rows>
+    {#each Array(options.numRows).fill() as _, ri}
+      <row style="height: {sizes && sizes['r' + ri] ? sizes['r' + ri] : options.defaultHeight}em;">
         {#each Array(options.numColumns).fill() as col, ci}
-          <fixedcell class:hresizing={resizing}
-                class:sel={selected && (ci >= selected.min.x && ci <= selected.max.x) || focused.x == ci}
-                style="min-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em; max-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em;"
-                >
-            {colName(ci)}
-            <hresizer class:silent={resizing} on:pointerdown={e => hDown(e, ci, true)} />
-          </fixedcell>
-        {/each}
-      </gridheader>
-    {/if}
-    <rows>
-      {#each Array(options.numRows).fill() as _, ri}
-        <row style="height: {sizes && sizes['r' + ri] ? sizes['r' + ri] : options.defaultHeight}em;">
-          {#each Array(options.numColumns).fill() as col, ci}
-            {#if options.rows && ci === 0}
-              <fixedcell class:vresizing={resizing} class:sel={selected && (ri >= selected.min.y && ri <= selected.max.y) || focused.y == ri}>
-                {ri + 1}
-                <vresizer class:silent={resizing} on:pointerdown={e => hDown(e, ri, false)} />
-              </fixedcell>
-            {/if}
-            <cell style="min-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em; max-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em;"
-              class:focused={focused && focused.x == ci && focused.y == ri}
-              class:sel={selected && (ci >= selected.min.x) && (ci <= selected.max.x) && (ri >= selected.min.y) && (ri <= selected.max.y)}
-              on:dblclick={e => editCell(e, ri, ci)}
-            >
-              {#if editing && focused && focused.x == ci && focused.y == ri}
-                <input bind:this={editor} on:blur={parseValue} type='text' bind:value={data[ri][ci]}>
-              {:else}
-                {#if data[ri] && data[ri][ci]}
-                  {#if data[ri][ci][0] === '='}
-                    {calculated[ri] && calculated[ri][ci] ? calculated[ri][ci] : data[ri][ci]}
-                  {:else}
-                    {data[ri][ci]}
-                  {/if}
+          {#if options.rows && ci === 0}
+            <fixedcell class:vresizing={resizing} class:sel={selected && (ri >= selected.min.y && ri <= selected.max.y) || focused.y == ri}>
+              {ri + 1}
+              <vresizer class:silent={resizing} on:pointerdown={e => hDown(e, ri, false)} />
+            </fixedcell>
+          {/if}
+          <cell style="min-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em; max-width: {sizes && sizes['c' + ci] ? sizes['c' + ci] : options.defaultWidth}em;"
+            class:focused={focused && focused.x == ci && focused.y == ri}
+            class:sel={selected && (ci >= selected.min.x) && (ci <= selected.max.x) && (ri >= selected.min.y) && (ri <= selected.max.y)}
+            on:dblclick={e => editCell(e, ri, ci)}
+          >
+            {#if editing && focused && focused.x == ci && focused.y == ri}
+              <input bind:this={editor} on:blur={parseValue} type='text' bind:value={data[ri][ci]}>
+            {:else}
+              {#if data[ri] && data[ri][ci]}
+                {#if data[ri][ci][0] === '='}
+                  {calculated[ri] && calculated[ri][ci] ? calculated[ri][ci] : data[ri][ci]}
+                {:else}
+                  {data[ri][ci]}
                 {/if}
               {/if}
-            </cell>
-          {/each}
-        </row>
-      {/each}
-      {#if !resizing && selected}
-        <selectionbox style="top: {selbox.top}px; left: {selbox.left}px; width: {selbox.width}px; height: {selbox.height}px;" class="selborder">
-          <div class="replicator" />
-        </selectionbox>
-      {/if}
-    </rows>
-  </gridcontainer>
+            {/if}
+          </cell>
+        {/each}
+      </row>
+    {/each}
+    {#if !resizing && selected}
+      <selectionbox style="top: {selbox.top}px; left: {selbox.left}px; width: {selbox.width}px; height: {selbox.height}px;" class="selborder">
+        <div class="replicator" />
+      </selectionbox>
+    {/if}
+  </rows>
 </grid>
 
 
+<style>
+
+/* @border: #2196F3; */
+/* @header: #F8F9FA; */
+/* @headerborder: #C0C0C0; */
+/* @selected: #E9F0FC; */
+/* @selectedheader: #E8EAED; */
+/* @cellborder: #E2E2E3; */
+
+selectionbox {
+  position: absolute;
+  border: 1px solid #1f91f4;
+  pointer-events: none;
+}
+
+.replicator {
+  position: absolute;
+  font-size: 0;
+  cursor: crosshair;
+  background-color: rgb(75, 137, 255);
+  height: 6px;
+  width: 6px;
+  border: 1px solid #fff;
+  z-index: 8;
+  pointer-events: all;
+  display: block;
+  bottom: -4px;
+  right: -4px;
+}
+
+.replicator.busy {
+  pointer-events: none;
+}
+
+grid {
+  display: table;
+  table-layout: fixed;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  white-space: nowrap;
+  margin: 0;
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+grid:focus {
+  outline: none;
+}
+
+gridheader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex: 0;
+  white-space: nowrap;
+  display: flex;
+}
+gridheader>fixedcell {
+  border: 1px solid #C0C0C0;
+  text-align: left;
+  cursor: s-resize;
+  margin-left: -1px;
+}
+gridheader>fixedcell.sel {
+  background: #E8EAED;
+}
+gridheader>fixedcell:first-child {
+  z-index: 11;
+  margin-left: 0;
+}
+
+row {
+  display: flex;
+}
+
+fixedcell {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  left: 0;
+  z-index: 9;
+  padding: 0 .4em;
+  background: #f8f9fa;
+  border-bottom: 1px solid #C0C0C0;
+  border-right: 1px solid #C0C0C0;
+  font-weight: normal;
+  text-align: right;
+  color: #888;
+  line-height: 2em;
+  box-sizing: border-box;
+  cursor: e-resize;
+  display: inline-block;
+  width: 4em;
+  flex-shrink: 0;
+}
+
+fixedcell.sel {
+  background: #E8EAED;
+}
+
+cell {
+  padding: 0 .3em;
+  border: 1px solid #E2E2E3;
+  text-align: left;
+  line-height: 2em;
+  margin-top: -1px;
+  margin-left: -1px;
+  box-sizing: border-box;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+cell.right {
+  text-align: right;
+}
+cell.center {
+  text-align: center;
+}
+cell>input {
+  font-family: inherit;
+  font-weight: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+}
+cell.sel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #005eff;
+  opacity: .1;
+}
+
+.focused {
+  border-color: #2196F3;
+  z-index: 8;
+  outline: 1px solid #2196F3;
+  outline-offset: -2px;
+}
+
+.silent {
+  pointer-events: none;
+}
+
+vresizer {
+  bottom: 0;
+  width: 100%;
+  height: .4em;
+  left: 0;
+  cursor: ns-resize;
+  position: absolute;
+}
+
+.vresizing {
+  cursor: ns-resize;
+}
+
+hresizer {
+  right: 0;
+  height: 100%;
+  width: .4em;
+  top: 0;
+  cursor: ew-resize;
+  position: absolute;
+}
+
+.hresizing {
+  cursor: ew-resize;
+}
+
+</style>
+
+<!--
 <style>
 grid {
   width: 100%;
@@ -739,4 +920,4 @@ hresizer {
 .hresizing {
   cursor: ew-resize;
 }
-</style>
+</style> -->

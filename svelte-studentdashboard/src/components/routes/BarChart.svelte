@@ -25,7 +25,7 @@
     <svg viewbox="0 0 {diffScores.length * 42} 370" fill="#222">
 
       <!-- black baselines (x- and y-axis) -->
-      <!-- Move to 0(x) 130(y), h(x) / v(y) = length  -->
+      <!-- Move to 0(x) 130(y), h(x) / v(y) = length                        deze nog verwijderen voor het inleveren!! -->
       <path d="M35 245 h2064 v1 H35 M35 20 h1 v225 H35 z" />
 
       <!-- horizontal green bar -->

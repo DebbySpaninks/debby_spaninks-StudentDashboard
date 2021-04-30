@@ -44,9 +44,6 @@ onMount(async() => {
 </script>
 
 <Router>
- <div class="container">
-
-  <main>
 
     <Route path="/">
       <Header title="Student Dashboard"/>
@@ -93,36 +90,43 @@ onMount(async() => {
 
     <Route path="tabeloverzicht">
       <Header title="Tabel-overzicht"/>
-      <div class="canvas">
-        <List items={studentnames}/>
+      <div class="canvas-grid">
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
-        <div class="grid-container">
-          <Grid class="grid" bind:data={studentdata} bind:sizes />
-        </div>
+      <span>
+        <List items={studentnames}/>
+            <Grid class="grid" bind:data={studentdata} bind:sizes />
+            </span>
       {/if}
       </div>
     </Route>
 
-  </main>
-
-  </div>
 </Router>
 
 <style>
 
 .canvas {
   display: flex;
+  height: 100%;
+  flex: 1;
 }
 
-.container {
-  margin: 1em 2.5em;
-  padding: 1em;
-}
-
-.chart, .grid-container {
+.chart {
   padding-left: 2em;
+}
+
+.canvas-grid {
+  display: flex;
+  /* flex: 1; */
+  height: 100%;
+  /* width: 70%; */
+  overflow: auto;
+  order: 1;
+}
+
+span {
+
 }
 
 div.chart {
