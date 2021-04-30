@@ -94,10 +94,8 @@ onMount(async() => {
       {#if !studentdata}
         <div>Even geduld...</div>
       {:else}
-      <span>
         <List items={studentnames}/>
-            <Grid class="grid" bind:data={studentdata} bind:sizes />
-            </span>
+          <Grid class="grid" bind:data={studentdata} bind:sizes />
       {/if}
       </div>
     </Route>
