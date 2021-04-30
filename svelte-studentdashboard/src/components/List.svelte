@@ -20,11 +20,10 @@ export let items = [];
 <style>
 
   ul {
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     list-style-type: none;
     height: 19.7em;
-    order: 0;
     padding: 3.3em 3em 3em 3.5em;
   }
 

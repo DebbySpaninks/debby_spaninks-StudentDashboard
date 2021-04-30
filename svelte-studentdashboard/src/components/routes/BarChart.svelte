@@ -93,7 +93,6 @@
   }
 
   .svg-wrapper {
-    /* background-color: #F3F4F5; */
     width: var(--viewboxWidth);
   }
 
@@ -102,9 +101,9 @@
     position: sticky;
   }
 
-  /* .grades {
+  .grades {
     font-size: 0.8em;
     background-color: #F3F4F5;
-  } */
+  }
 
 </style>

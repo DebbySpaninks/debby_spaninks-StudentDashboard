@@ -34,7 +34,7 @@ export let title = 'Staafdiagram';
   div.header {
     margin: 0;
     padding: 3em;
-    height: 200px;
+    height: 8em;
   }
 
   nav {
