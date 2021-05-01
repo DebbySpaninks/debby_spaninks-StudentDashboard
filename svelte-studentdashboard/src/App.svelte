@@ -77,7 +77,7 @@
   </Route>
 
   <Route path="staafdiagram/:id" let:params>
-    <Header title="Staafdiagram van {params.id}" />
+    <Header title="Evaluatie van {params.id}" />
     <div class="canvas">
       {#if !studentdata}
         <div>Even geduld...</div>
@@ -102,7 +102,11 @@
       {:else}
         <List items={studentnames} />
         <div class="gridcontainer">
-          <Grid bind:data={studentdata} bind:sizes />
+          <Grid
+            bind:data={studentdata}
+            bind:sizes
+            bind:numRows={studentdata.length}
+          />
         </div>
       {/if}
     </div>
