@@ -1,7 +1,6 @@
 <!-- Component to display Link buttons in Header -->
 <script>
   import { Link } from "svelte-navigator";
-  // import List from './components/List.svelte';
 
   export let title = "Staafdiagram";
 </script>
