@@ -7,6 +7,8 @@ import { tick } from 'svelte';
 export let options = {};
 export let data = [ [] ];
 export let sizes = {};
+export let numRows = [];
+// export let numColumns = [];
 
 // local state
 let grid;
@@ -22,9 +24,9 @@ let editor;
 
 // option defaults
 const defaults = {
-  numRows: 100,
-  numColumns: 26,
-  defaultWidth: 10,
+  numRows: numRows,
+  numColumns: 4,
+  defaultWidth: 18,
   defaultHeight: 2,
   rows: true,
   columns: true
@@ -580,13 +582,6 @@ function calcSelBox(selected) {
 
 <style>
 
-/* @border: #2196F3; */
-/* @header: #F8F9FA; */
-/* @headerborder: #C0C0C0; */
-/* @selected: #E9F0FC; */
-/* @selectedheader: #E8EAED; */
-/* @cellborder: #E2E2E3; */
-
 selectionbox {
   position: absolute;
   border: 1px solid #1f91f4;
@@ -758,166 +753,3 @@ hresizer {
 }
 
 </style>
-
-<!--
-<style>
-grid {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: scroll;
-  position: relative;
-}
-selectionbox {
-  position: absolute;
-  border: 1px solid #1f91f4;
-  pointer-events: none;
-}
-.replicator {
-  position: absolute;
-  font-size: 0;
-  cursor: crosshair;
-  background-color: #4b89ff;
-  height: 6px;
-  width: 6px;
-  border: 1px solid #fff;
-  z-index: 9000;
-  pointer-events: all;
-  display: block;
-  bottom: -4px;
-  right: -4px;
-}
-.replicator.busy {
-  pointer-events: none;
-}
-gridcontainer {
-  position: relative;
-  border-collapse: collapse;
-  user-select: none;
-  -webkit-user-select: none;
-  display: flex;
-  flex-direction: column;
-}
-gridcontainer:focus {
-  outline: none;
-}
-gridheader {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  flex: 0;
-  white-space: nowrap;
-  display: flex;
-}
-gridheader > fixedcell {
-  border: 1px solid #C0C0C0;
-  text-align: left;
-  cursor: s-resize;
-  margin-left: -1px;
-}
-gridheader > fixedcell.sel {
-  background: #E8EAED;
-}
-gridheader > fixedcell:first-child {
-  z-index: 201;
-  margin-left: 0;
-}
-row {
-  display: flex;
-}
-fixedcell {
-  position: -webkit-sticky;
-  /* for Safari */
-  position: sticky;
-  left: 0;
-  z-index: 101;
-  padding: 0 .4em;
-  background: #F8F9FA;
-  border-bottom: 1px solid #C0C0C0;
-  border-right: 1px solid #C0C0C0;
-  font-weight: normal;
-  text-align: right;
-  color: #888;
-  line-height: 2em;
-  box-sizing: border-box;
-  cursor: e-resize;
-  display: inline-block;
-  width: 4em;
-  flex-shrink: 0;
-}
-fixedcell.sel {
-  background: #E8EAED;
-}
-cell {
-  padding: 0 .3em;
-  border: 1px solid #E2E2E3;
-  text-align: left;
-  line-height: 2em;
-  margin-top: -1px;
-  margin-left: -1px;
-  box-sizing: border-box;
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-cell.right {
-  text-align: right;
-}
-cell.center {
-  text-align: center;
-}
-cell > input {
-  font-family: inherit;
-  font-weight: inherit;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: inherit;
-  box-sizing: border-box;
-  width: 100%;
-  outline: none;
-}
-cell.sel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #005eff;
-  opacity: .1;
-}
-.focused {
-  border-color: #2196F3;
-  z-index: 100;
-  outline: 1px solid #2196F3;
-  outline-offset: -2px;
-}
-.silent {
-  pointer-events: none;
-}
-vresizer {
-  bottom: 0;
-  width: 100%;
-  height: .4em;
-  left: 0;
-  cursor: ns-resize;
-  position: absolute;
-}
-.vresizing {
-  cursor: ns-resize;
-}
-hresizer {
-  right: 0;
-  height: 100%;
-  width: .4em;
-  top: 0;
-  cursor: ew-resize;
-  position: absolute;
-}
-.hresizing {
-  cursor: ew-resize;
-}
-</style> -->
