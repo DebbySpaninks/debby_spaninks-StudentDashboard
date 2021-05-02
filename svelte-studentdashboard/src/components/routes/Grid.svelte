@@ -25,8 +25,8 @@ let editor;
 // option defaults
 const defaults = {
   numRows: numRows,
-  numColumns: 4,
-  defaultWidth: 18,
+  numColumns: 26,
+  defaultWidth: 10,
   defaultHeight: 2,
   rows: true,
   columns: true
