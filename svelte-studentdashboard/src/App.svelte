@@ -15,7 +15,10 @@
 
   let studentdata = false;
 
-  // const average = rating => rating.reduce((a, b) => a + b, 0) / rating.length;
+  // const getAverage = (assignments, enjoymentRating) => {
+  //
+  // }
+
 
   // array of all studentnames (studentdata.map(row => row[0])
   const uniqueItems = (index) =>
@@ -27,8 +30,6 @@
   $: enjoymentRating = studentdata ? extractCol(2) : [];
   $: difficultyRating = studentdata ? extractCol(3) : [];
 
-  // const average = enjoy => enjoy.reduce((a, b) => a + b, 0) / enjoy.length;
-
   let sizes = {};
 
   onMount(async () => {
@@ -39,7 +40,7 @@
       const responseAsText = await response.text();
       setTimeout(function resTimeOut() {
         studentdata = parseCSV(responseAsText);
-      }, 100);
+      }, 150);
     } catch (error) {
       console.log("Oops something went wrong:", error);
     }
@@ -49,38 +50,27 @@
 <Router>
   <Route path="/">
     <Header title="Student Dashboard" />
-    <div class="canvas">
-      <List items={studentnames} />
-      <div class="chart">
-        <BarChart
-          bind:xTicks={assignments}
-          bind:enjoyScores={enjoymentRating}
-          bind:diffScores={difficultyRating}
-        />
+      <div class="canvas">
+        {#if !studentdata}
+          <div class="message">Even geduld...</div>
+        {:else}
+          <List items={studentnames} />
+          <div class="chart">
+            <BarChart
+              bind:xTicks={assignments}
+              bind:enjoyScores={enjoymentRating}
+              bind:diffScores={difficultyRating}
+            />
+          </div>
+        {/if}
       </div>
-    </div>
-  </Route>
-
-  <Route path="staafdiagram">
-    <Header title="Staafdiagram" />
-
-    <div class="canvas">
-      <List items={studentnames} />
-      <div class="chart">
-        <BarChart
-          bind:xTicks={assignments}
-          bind:enjoyScores={enjoymentRating}
-          bind:diffScores={difficultyRating}
-        />
-      </div>
-    </div>
   </Route>
 
   <Route path="staafdiagram/:id" let:params>
     <Header title="Evaluatie van {params.id}" />
     <div class="canvas">
       {#if !studentdata}
-        <div>Even geduld...</div>
+        <div class="message">Even geduld...</div>
       {:else}
         <List items={studentnames} />
         <div class="chart">
@@ -96,12 +86,13 @@
 
   <Route path="tabeloverzicht">
     <Header title="Tabel-overzicht" />
-    <div class="canvas">
+    <div class="canvas canvas-grid">
       {#if !studentdata}
-        <div>Even geduld...</div>
+        <div class="message">Even geduld...</div>
       {:else}
         <List items={studentnames} />
-        <div class="gridcontainer">
+        <div class="grid-container"></div>
+        <div class="grid-wrapper">
           <Grid
             bind:data={studentdata}
             bind:sizes
@@ -114,23 +105,39 @@
 </Router>
 
 <style>
+div.message {
+  padding: 2em 3em;
+  font-size: 1.5em;
+}
   .canvas {
     flex: 1;
     display: flex;
     flex-direction: row;
     overflow: hidden;
+    margin: 0em 1em;
   }
 
-  .chart {
-    padding-left: 2em;
-  }
+.canvas-grid {
+  margin: 0em;
+}
 
-  .gridcontainer {
+.grid-container {
+  padding-left: 3em;
+}
+
+  .grid-wrapper {
     overflow: auto;
     font-size: 85%;
   }
 
   div.chart {
-    padding: 0;
+    height: 30em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 84.5%;
+    margin: 0;
+    padding-top: 1em;
   }
 </style>
