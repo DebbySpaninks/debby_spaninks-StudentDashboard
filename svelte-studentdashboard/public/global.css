@@ -16,7 +16,7 @@ body {
 }
 
 a {
-	color: rgb(0,100,200);
+	color: #000 !important;
 	text-decoration: none;
 }
 
@@ -48,9 +48,9 @@ input:disabled {
 }
 
 button {
-	color: #333;
-	background-color: #f4f4f4;
+	background-color: #f3f3f3;
 	outline: none;
+	cursor: pointer;
 }
 
 button:disabled {
