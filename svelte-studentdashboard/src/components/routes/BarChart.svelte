@@ -7,17 +7,29 @@
 
   const yTicks = [ 5, 4, 3, 2, 1, 0 ];
 
-  // $: barWidth = 10;
-
 </script>
 
-<!-- legend green and pink -->
-<svg width="400" height="43">
-  <rect x="70" y="13" width="30" height="15" style="fill:#00D84F;stroke:black" />
-  <text x="105" y="26" width="30" height="15">Leuk</text>
-  <rect x="165" y="13" width="30" height="15" style="fill:#FF377A;stroke:black" />
-  <text x="200" y="26" width="30" height="15">Moeilijk</text>
-</svg>
+<div class="legend-container">
+
+  <!-- legend green -->
+  <label>
+    <input type="checkbox" name="green-legend" value="" />
+    <svg class="legend" width="80" height="25">
+      <rect x="1" y="9" width="30" height="15" style="fill:#00D84F;stroke:black" />
+      <text class="legend-green" x="36" y="23" width="30" height="15">Leuk</text>
+    </svg>
+  </label>
+
+  <!-- legend pink -->
+  <label>
+    <input type="checkbox" name="green-legend" value="" />
+    <svg class="legend" width="100" height="25">
+      <rect x="1" y="9" width="30" height="15" style="fill:#FF377A;stroke:black" />
+      <text class="legend-pink" x="36" y="23" width="30" height="15">Moeilijk</text>
+    </svg>
+  </label>
+
+</div>
 
 <div class="svg-container">
   <div class="svg-wrapper" style="--viewboxWidth:{diffScores.length * 42}px">
@@ -25,7 +37,6 @@
     <svg viewbox="0 0 {diffScores.length * 42} 370" fill="#222">
 
       <!-- black baselines (x- and y-axis) -->
-      <!-- Move to 0(x) 130(y), h(x) / v(y) = length                        deze nog verwijderen voor het inleveren!! -->
       <path d="M35 245 h2064 v1 H35 M35 20 h1 v225 H35 z" />
 
       <!-- horizontal green bar -->
@@ -86,10 +97,29 @@
 
 <style>
 
+.legend-container {
+  display: flex;
+  align-self: flex-start;
+  padding: 1.5em 0em 27em 6em;
+  position: absolute;
+}
+
+.legend:hover {
+    font-weight: bold;
+}
+
+text.legend-green,
+text.legend-pink,
+rect,
+input {
+  cursor: pointer;
+}
+
   .svg-container {
     max-width: 1215px;
-    width: 100%;
+    width: 87.5%;
     overflow: auto;
+    margin-left: -4em;
   }
 
   .svg-wrapper {
@@ -97,7 +127,7 @@
   }
 
   .text {
-    font-size: 0.5em;
+    font-size: 0.55em;
     position: sticky;
   }
 
