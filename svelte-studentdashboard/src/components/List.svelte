@@ -11,7 +11,7 @@
       <Link to="/staafdiagram/{item}">{item}</Link>
     </li>
   {:else}
-    <h3>Helaas geen studenten aanwezig</h3>
+    <p>Helaas geen studenten aanwezig</p>
   {/each}
 </ul>
 
@@ -19,7 +19,7 @@
   ul {
     list-style-type: none;
     order: 0;
-    padding: 2em;
+    padding: 5.25em 1em 0em 4.5em;
     overflow: auto;
     flex-shrink: 0;
     margin: 0;
