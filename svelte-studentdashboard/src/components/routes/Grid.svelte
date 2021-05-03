@@ -8,7 +8,6 @@ export let options = {};
 export let data = [ [] ];
 export let sizes = {};
 export let numRows = [];
-// export let numColumns = [];
 
 // local state
 let grid;
