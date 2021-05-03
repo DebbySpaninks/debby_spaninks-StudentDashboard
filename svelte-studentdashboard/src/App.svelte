@@ -1,17 +1,17 @@
 <script>
-  import { Router, Route } from "svelte-navigator";
-  import Header from "./components/Header.svelte";
-  import BarChart from "./components/routes/BarChart.svelte";
-  import Grid from "./components/routes/Grid.svelte";
-  import List from "./components/List.svelte";
-  import { onMount } from "svelte";
+  import { Router, Route } from 'svelte-navigator';
+  import Header from './components/Header.svelte';
+  import BarChart from './components/routes/BarChart.svelte';
+  import Grid from './components/routes/Grid.svelte';
+  import List from './components/List.svelte';
+  import { onMount } from 'svelte';
 
   // \n = new line character, trim is used for space
-  const parseCSV = (text) =>
+  const parseCSV = text =>
     text
-      .split("\n")
-      .filter((line) => line.trim() !== "")
-      .map((row) => row.split(","));
+      .split('\n')
+      .filter(line => line.trim() !== '')
+      .map(row => row.split(','));
 
   let studentdata = false;
 
@@ -21,28 +21,34 @@
 
 
   // array of all studentnames (studentdata.map(row => row[0])
-  const uniqueItems = (index) =>
-    [...new Set(studentdata.map((row) => row[index]))].sort();
-  const extractCol = (index) => studentdata.map((row) => row[index]);
+  const uniqueItems = index =>
+    [ ...new Set(studentdata.map(row => row[index])) ];
+  const extractCol = index => studentdata.map(row => row[index]);
 
   $: studentnames = studentdata ? uniqueItems(0) : [];
   $: assignments = studentdata ? uniqueItems(1) : [];
   $: enjoymentRating = studentdata ? extractCol(2) : [];
   $: difficultyRating = studentdata ? extractCol(3) : [];
+  // $: assignments && console.log(assignments.length);
+
+const rating = (index, array) =>
+    enjoymentRating.slice(index * assignments.length, (index + 1) * assignments.length);
+  // console.log(rating(0, enjoymentRating));
 
   let sizes = {};
 
-  onMount(async () => {
-    console.log("Mounted");
+  onMount(async() => {
+    console.log('Mounted');
     try {
       // read csv file
-      const response = await fetch("/studentdata.csv");
+      const response = await fetch('/studentdata.csv');
       const responseAsText = await response.text();
       setTimeout(function resTimeOut() {
         studentdata = parseCSV(responseAsText);
       }, 150);
-    } catch (error) {
-      console.log("Oops something went wrong:", error);
+    }
+    catch (error) {
+      console.log('Oops something went wrong:', error);
     }
   });
 </script>
@@ -54,7 +60,7 @@
         {#if !studentdata}
           <div class="message">Even geduld...</div>
         {:else}
-          <List items={studentnames} />
+          <List items={studentnames.sort()} />
           <div class="chart">
             <BarChart
               bind:xTicks={assignments}
@@ -72,7 +78,7 @@
       {#if !studentdata}
         <div class="message">Even geduld...</div>
       {:else}
-        <List items={studentnames} />
+        <List items={studentnames.sort()} />
         <div class="chart">
           <BarChart
             bind:xTicks={assignments}
@@ -90,7 +96,7 @@
       {#if !studentdata}
         <div class="message">Even geduld...</div>
       {:else}
-        <List items={studentnames} />
+        <List items={studentnames.sort()} />
         <div class="grid-container"></div>
         <div class="grid-wrapper">
           <Grid
