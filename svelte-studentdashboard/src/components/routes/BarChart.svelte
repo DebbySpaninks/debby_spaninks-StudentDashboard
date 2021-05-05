@@ -1,19 +1,26 @@
 <!-- Component to display BarChart -->
 
 <script>
+  // import Checkbox from './Checkbox.svelte';
+
   export let enjoyScores = [];
   export let diffScores = [];
   export let xTicks = [];
+
+  let group = 1;
+  let selection = [];
 
   const yTicks = [ 5, 4, 3, 2, 1, 0 ];
 
 </script>
 
+<h3>Checkboxes: {selection.join(', ')}</h3>
+
 <div class="legend-container">
 
   <!-- legend green -->
   <label>
-    <input type="checkbox" name="green-legend" value="" />
+    <input type=checkbox bind:group={selection} value={"Leuk"} checked="true"/>
     <svg class="legend" width="80" height="25">
       <rect x="1" y="9" width="30" height="15" style="fill:#00D84F;stroke:black" />
       <text class="legend-green" x="36" y="23" width="30" height="15">Leuk</text>
@@ -22,7 +29,7 @@
 
   <!-- legend pink -->
   <label>
-    <input type="checkbox" name="green-legend" value="" />
+    <input type=checkbox bind:group={selection} value={"Moeilijk"} checked="true"/>
     <svg class="legend" width="100" height="25">
       <rect x="1" y="9" width="30" height="15" style="fill:#FF377A;stroke:black" />
       <text class="legend-pink" x="36" y="23" width="30" height="15">Moeilijk</text>
@@ -40,20 +47,24 @@
       <path d="M35 245 h2064 v1 H35 M35 20 h1 v225 H35 z" />
 
       <!-- horizontal green bar -->
+      <!-- {#if checked} -->
       {#each enjoyScores as score, i}
         <path
           d="M{43 + (i * 37)} {245 - ((225 / 5) * score)} h10 v{(225 / 5) * score} H{43 + (i * 37)} z"
           fill="#00D84F"
         />
     	{/each}
+      <!-- {/if} -->
 
       <!-- horizontal pink bar -->
-      {#each diffScores as score, i}
-        <path
-          d="M{54 + (i * 37)} {245 - ((225 / 5) * score)} h10 v{(225 / 5) * score} H{54 + (i * 37)} z"
-          fill="#FF377A"
-        />
-    	{/each}
+      <!-- {#if selection} -->
+        {#each diffScores as score, i}
+          <path
+            d="M{54 + (i * 37)} {245 - ((225 / 5) * score)} h10 v{(225 / 5) * score} H{54 + (i * 37)} z"
+            fill="#FF377A"
+          />
+      	{/each}
+      <!-- {/if} -->
 
       <!-- horizontal ticks -->
       {#each xTicks as tick, i}
