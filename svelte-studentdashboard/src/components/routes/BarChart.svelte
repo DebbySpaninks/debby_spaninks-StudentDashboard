@@ -11,6 +11,8 @@
   // let selection = [];
   let yes = false;
 
+  // ipv bind:checked moet het worden bind:selection ofzo maar verder.....
+
   const yTicks = [ 5, 4, 3, 2, 1, 0 ];
 
 </script>
