@@ -15,11 +15,6 @@
 
   let studentdata = false;
 
-  // const getAverage = (assignments, enjoymentRating) => {
-  //
-  // }
-
-
   // array of all studentnames (studentdata.map(row => row[0])
   const uniqueItems = index =>
     [ ...new Set(studentdata.map(row => row[index])) ];
