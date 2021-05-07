@@ -570,7 +570,7 @@ function calcSelBox(selected) {
         {/each}
       </row>
     {/each}
-    {#if !resizing && selected}
+    {#if resizing && selected}
       <selectionbox style="top: {selbox.top}px; left: {selbox.left}px; width: {selbox.width}px; height: {selbox.height}px;" class="selborder">
         <div class="replicator" />
       </selectionbox>
