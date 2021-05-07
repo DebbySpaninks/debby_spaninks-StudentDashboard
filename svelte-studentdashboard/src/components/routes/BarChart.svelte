@@ -7,23 +7,18 @@
   export let diffScores = [];
   export let xTicks = [];
 
-  // let group = 1;
-  // let selection = [];
-  let yes = false;
-
-  // ipv bind:checked moet het worden bind:selection ofzo maar verder.....
+  let green, pink;
 
   const yTicks = [ 5, 4, 3, 2, 1, 0 ];
 
 </script>
 
-<!-- <h3>Checkboxes: {selection.join(', ')}</h3> -->
 
 <div class="legend-container">
 
   <!-- legend green -->
   <label>
-    <input type=checkbox bind:checked={yes}/>
+    <input type=checkbox bind:checked={green}/>
     <svg class="legend" width="80" height="25">
       <rect x="1" y="9" width="30" height="15" style="fill:#00D84F;stroke:black" />
       <text class="legend-green" x="36" y="23" width="30" height="15">Leuk</text>
@@ -32,7 +27,7 @@
 
   <!-- legend pink -->
   <label>
-    <input type=checkbox bind:checked={yes}/>
+    <input type=checkbox bind:checked={pink}/>
     <svg class="legend" width="100" height="25">
       <rect x="1" y="9" width="30" height="15" style="fill:#FF377A;stroke:black" />
       <text class="legend-pink" x="36" y="23" width="30" height="15">Moeilijk</text>
@@ -50,7 +45,7 @@
       <path d="M35 245 h2064 v1 H35 M35 20 h1 v225 H35 z" />
 
       <!-- horizontal green bar -->
-      {#if yes}
+      {#if green || !pink}
         {#each enjoyScores as score, i}
           <path
             d="M{43 + (i * 37)} {245 - ((225 / 5) * score)} h10 v{(225 / 5) * score} H{43 + (i * 37)} z"
@@ -60,7 +55,7 @@
       {/if}
 
       <!-- horizontal pink bar -->
-      {#if yes}
+      {#if pink || !green}
         {#each diffScores as score, i}
           <path
             d="M{54 + (i * 37)} {245 - ((225 / 5) * score)} h10 v{(225 / 5) * score} H{54 + (i * 37)} z"
@@ -108,6 +103,7 @@
 
   </div>
 </div>
+
 
 <style>
 
