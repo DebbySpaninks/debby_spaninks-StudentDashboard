@@ -1,7 +1,6 @@
 <!-- Component to display BarChart -->
 
 <script>
-  // import Checkbox from './Checkbox.svelte';
 
   export let enjoyScores = [];
   export let diffScores = [];
@@ -64,21 +63,57 @@
       	{/each}
       {/if}
 
-      <!-- horizontal ticks -->
-      {#each xTicks as tick, i}
-        <path d="M{53 + (i * 37)} 246 h1 v10 H{53 + (i * 37)} M0 0 h0 v275 H0 z" />
-      {/each}
+      <!-- horizontal ticks and text with both scores -->
+      {#if green && pink || !green && !pink}
+        {#each xTicks as tick, i}
+          <path d="M{53 + (i * 37)} 246 h1 v10 H{53 + (i * 37)} M0 0 h0 v275 H0 z" />
+        {/each}
+        {#each xTicks as text, i}
+          {#if text}
+            <text
+              class="text" x={60 + (i * 37)} y="265"
+              transform="rotate(-45 {60 + (i * 37)} 270)"
+              style="text-anchor: end">{text}
+            </text>
+          {/if}
+        {/each}
+      {/if}
 
-      <!-- horizontal text -->
-      {#each xTicks as text, i}
-        {#if text}
-          <text
-            class="text" x={60 + (i * 37)} y="265"
-            transform="rotate(-45 {60 + (i * 37)} 270)"
-            style="text-anchor: end">{text}
-          </text>
-        {/if}
-      {/each}
+      <!-- horizontal ticks and text with enjoyScores -->
+      {#if pink && !green}
+        <!-- ticks -->
+        {#each xTicks as tick, i}
+          <path d="M{59 + (i * 37)} 246 h1 v10 H{59 + (i * 37)} M0 0 h0 v275 H0 z" />
+        {/each}
+        <!-- text -->
+        {#each xTicks as text, i}
+          {#if text}
+            <text
+              class="text" x={66 + (i * 37)} y="265"
+              transform="rotate(-45 {66 + (i * 37)} 270)"
+              style="text-anchor: end">{text}
+            </text>
+          {/if}
+        {/each}
+      {/if}
+
+      <!-- horizontal ticks and text with diffScores -->
+      {#if green && !pink}
+        <!-- ticks -->
+        {#each xTicks as tick, i}
+          <path d="M{48 + (i * 37)} 246 h1 v10 H{48 + (i * 37)} M0 0 h0 v275 H0 z" />
+        {/each}
+        <!-- text -->
+        {#each xTicks as text, i}
+          {#if text}
+            <text
+              class="text" x={55 + (i * 37)} y="265"
+              transform="rotate(-45 {55 + (i * 37)} 270)"
+              style="text-anchor: end">{text}
+            </text>
+          {/if}
+        {/each}
+      {/if}
 
       <!-- vertical numbers -->
       {#each yTicks as grade, i}
