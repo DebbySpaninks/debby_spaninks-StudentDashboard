@@ -1,8 +1,9 @@
 <!-- Component to display Link buttons in Header -->
-<script>
-  import { Link } from "svelte-navigator";
 
-  export let title = "";
+<script>
+  import { Link } from 'svelte-navigator';
+
+  export let title = '';
 </script>
 
 <div class="header">

@@ -1,6 +1,7 @@
 <!-- Component to display List -->
+
 <script>
-  import { Link } from "svelte-navigator";
+  import { Link } from 'svelte-navigator';
 
   export let items = [];
 </script>

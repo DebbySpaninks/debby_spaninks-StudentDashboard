@@ -1,4 +1,5 @@
 <script>
+
   import { Router, Route } from 'svelte-navigator';
   import Header from './components/Header.svelte';
   import BarChart from './components/routes/BarChart.svelte';
@@ -6,7 +7,9 @@
   import List from './components/List.svelte';
   import { onMount } from 'svelte';
 
-  // \n = new line character, trim is used for space
+  let sizes = {};
+
+  // function to parse CSV
   const parseCSV = text =>
     text
       .split('\n')
@@ -15,7 +18,7 @@
 
   let studentdata = false;
 
-  // array of all studentnames (studentdata.map(row => row[0])
+  // function to create new Set
   const uniqueItems = index =>
     [ ...new Set(studentdata.map(row => row[index])) ];
 
@@ -42,25 +45,32 @@
       if (enjoymentRating !== null) {
         averages[key].enjoymentRatings.push(enjoymentRating);
         // recalculate average if a new rating is added
-        averages[key].enjoymentAverage = averages[key].enjoymentRatings.reduce((num, rating) => (num += rating), 0) / averages[key].enjoymentRatings.length;
+        averages[key].enjoymentAverage =
+          averages[key].enjoymentRatings.reduce((num, rating) =>
+            (num += rating), 0) / averages[key].enjoymentRatings.length;
       }
 
       if (difficultyRating !== null) {
         averages[key].difficultyRatings.push(difficultyRating);
         // recalculate average if a new rating is added
-        averages[key].difficultyAverage = averages[key].difficultyRatings.reduce((num, rating) => (num += rating), 0) / averages[key].difficultyRatings.length;
+        averages[key].difficultyAverage =
+          averages[key].difficultyRatings.reduce((num, rating) =>
+            (num += rating), 0) / averages[key].difficultyRatings.length;
       }
 
       return averages;
     }, {});
   }
 
-  const enjoymentRating = ratings => Object.values(ratings).map(assignment => assignment.enjoymentAverage);
-  const difficultyRating = ratings => Object.values(ratings).map(assignment => assignment.difficultyAverage);
+  const enjoymentRating =
+    ratings => Object.values(ratings).map(
+      assignment => assignment.enjoymentAverage);
+
+  const difficultyRating =
+    ratings => Object.values(ratings).map(
+      assignment => assignment.difficultyAverage);
+
   const assignments = ratings => Object.keys(ratings);
-
-
-  let sizes = {};
 
   onMount(async() => {
     console.log('Mounted');
@@ -76,9 +86,13 @@
       console.log('Oops something went wrong:', error);
     }
   });
+
 </script>
 
+
 <Router>
+
+  <!-- Dashboard Overview -->
   <Route path="/">
     <Header title="Student Dashboard" />
       <div class="canvas">
@@ -97,6 +111,7 @@
       </div>
   </Route>
 
+  <!-- BarChart for single student -->
   <Route path="staafdiagram/:id" let:params>
     <Header title="Evaluatie van {params.id}" />
     <div class="canvas">
@@ -115,6 +130,7 @@
     </div>
   </Route>
 
+  <!-- Grid with all students -->
   <Route path="tabeloverzicht">
     <Header title="Tabel-overzicht" />
     <div class="canvas canvas-grid">
@@ -133,9 +149,12 @@
       {/if}
     </div>
   </Route>
+
 </Router>
 
+
 <style>
+
 div.message {
   padding: 2em 3em;
   font-size: 1.5em;
@@ -171,4 +190,5 @@ div.message {
     margin: 0;
     padding-top: 1em;
   }
+
 </style>

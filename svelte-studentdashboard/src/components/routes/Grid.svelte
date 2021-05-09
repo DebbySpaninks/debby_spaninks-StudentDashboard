@@ -1,3 +1,5 @@
+<!-- component to display Grid -->
+
 <script>
 
 // imports
